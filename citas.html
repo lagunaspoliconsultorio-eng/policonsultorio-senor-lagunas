@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citas Médicas | Policonsultorio Señor de Lagunas</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#bfe8f7;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+.pagina{
+    min-height:100vh;
+    padding:35px 45px 70px;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 8% 10%,rgba(255,255,255,.9),transparent 25%),
+        radial-gradient(circle at 90% 90%,rgba(0,126,190,.2),transparent 35%),
+        repeating-linear-gradient(
+            135deg,
+            transparent 0px,
+            transparent 55px,
+            rgba(7,85,160,.035) 56px,
+            rgba(7,85,160,.035) 58px
+        ),
+        linear-gradient(135deg,#e5faff 0%,#b8e3f2 45%,#d5f2fb 100%);
+}
+
+.menu-boton{
+    position:absolute;
+    top:25px;
+    right:30px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:rgba(7,85,160,.9);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:2px solid rgba(255,255,255,.8);
+    box-shadow:0 7px 20px rgba(0,55,110,.35);
+    cursor:pointer;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+}
+
+.menu-boton:hover{
+    transform:scale(1.08);
+    background:#1591c8;
+    border-color:white;
+}
+
+.menu-boton span{
+    width:25px;
+    height:3px;
+    background:white;
+    border-radius:5px;
+    transition:all .3s ease;
+}
+
+.menu-boton.activo span:nth-child(1){
+    transform:translateY(8px) rotate(45deg);
+}
+
+.menu-boton.activo span:nth-child(2){
+    opacity:0;
+}
+
+.menu-boton.activo span:nth-child(3){
+    transform:translateY(-8px) rotate(-45deg);
+}
+
+.menu-desplegable{
+    position:absolute;
+    top:90px;
+    right:30px;
+    width:220px;
+    padding:18px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border:2px solid rgba(7,85,160,.3);
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,50,100,.3);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-15px) scale(.95);
+    transition:all .4s cubic-bezier(.175,.885,.32,1.275);
+    z-index:100;
+}
+
+.menu-desplegable.abierto{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
+}
+
+.logo-menu{
+    width:68px;
+    height:68px;
+    margin:3px auto 10px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid #0755A0;
+    display:block;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.nombre-clinica{
+    text-align:center;
+    color:#0755A0;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:12px;
+    letter-spacing:.5px;
+}
+
+.menu-desplegable a{
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#0755A0,#0b78bd);
+    padding:11px;
+    margin:8px 0;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:bold;
+    transition:all .3s ease;
+    box-shadow:0 4px 10px rgba(0,50,100,.15);
+}
+
+.menu-desplegable a:hover{
+    transform:translateX(5px);
+    background:#1591c8;
+    box-shadow:0 6px 15px rgba(21,145,200,.4);
+}
+
+.encabezado{
+    position:relative;
+    z-index:5;
+    max-width:1200px;
+    margin:55px auto 35px;
+    padding:20px 28px;
+    border-left:8px solid #0755A0;
+    background:rgba(255,255,255,.6);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-radius:0 20px 20px 0;
+    border-top:1px solid rgba(255,255,255,.7);
+    border-right:1px solid rgba(255,255,255,.7);
+    border-bottom:1px solid rgba(255,255,255,.7);
+    box-shadow:0 8px 25px rgba(0,70,120,.1);
+    animation:fadeIn .8s ease-out forwards;
+}
+
+.encabezado h1{
+    color:#06498d;
+    font-size:45px;
+    letter-spacing:1.5px;
+    text-shadow:1px 1px 2px rgba(255,255,255,.8);
+}
+
+.encabezado p{
+    color:#305b6f;
+    font-size:16px;
+    font-weight:bold;
+    margin-top:7px;
+}
+
+.contenido{
+    position:relative;
+    z-index:5;
+    max-width:1200px;
+    margin:auto;
+    animation:fadeIn 1s ease-out forwards;
+}
+
+.reserva{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    align-items:stretch;
+}
+
+.presentacion{
+    background:rgba(255,255,255,.78);
+    border:3px solid rgba(7,85,160,.3);
+    border-radius:24px;
+    padding:25px;
+    box-shadow:0 12px 30px rgba(0,70,120,.18);
+}
+
+.imagen-cita{
+    width:100%;
+    height:390px;
+    background:white;
+    border:2px solid rgba(7,85,160,.25);
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px rgba(0,70,120,.12);
+}
+
+.imagen-cita img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.presentacion h2{
+    color:#06498d;
+    text-align:center;
+    font-size:27px;
+    margin:25px 0 10px;
+}
+
+.presentacion > p{
+    color:#4a6d82;
+    text-align:center;
+    font-size:15px;
+    line-height:1.7;
+}
+
+.beneficios{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:25px;
+}
+
+.beneficio{
+    text-align:center;
+    padding:15px 8px;
+    border-right:1px solid rgba(7,85,160,.2);
+}
+
+.beneficio:last-child{
+    border-right:none;
+}
+
+.beneficio .icono{
+    width:45px;
+    height:45px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#0755A0,#0b78bd);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.beneficio h3{
+    color:#06498d;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.beneficio p{
+    color:#4a6d82;
+    font-size:12px;
+    line-height:1.4;
+}
+
+.formulario{
+    background:rgba(255,255,255,.9);
+    border:3px solid rgba(7,85,160,.35);
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 12px 30px rgba(0,70,120,.2);
+    position:relative;
+    overflow:visible;
+}
+
+.formulario::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:6px;
+    background:linear-gradient(90deg,#0755A0,#0b78bd,#159bd0);
+    border-radius:20px 20px 0 0;
+}
+
+.formulario h2{
+    color:#06498d;
+    font-size:31px;
+    margin-bottom:8px;
+}
+
+.subtitulo-formulario{
+    color:#4a6d82;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.campo-completo{
+    grid-column:1 / -1;
+}
+
+.campo label{
+    color:#06498d;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+    width:100%;
+    border:1px solid rgba(7,85,160,.25);
+    border-radius:12px;
+    padding:12px 13px;
+    background:#f9fdff;
+    color:#31566b;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    outline:none;
+    transition:all .3s ease;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus{
+    border-color:#0755A0;
+    box-shadow:0 0 0 3px rgba(7,85,160,.1);
+    background:white;
+}
+
+.campo textarea{
+    height:90px;
+    resize:none;
+}
+
+.campo-fecha{
+    position:relative;
+}
+
+.fecha-visual{
+    width:100%;
+    min-height:43px;
+    border:1px solid rgba(7,85,160,.25);
+    border-radius:12px;
+    padding:12px 13px;
+    background:#f9fdff;
+    color:#31566b;
+    font-size:13px;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.fecha-visual:hover,
+.fecha-visual.activa{
+    border-color:#0755A0;
+    box-shadow:0 0 0 3px rgba(7,85,160,.1);
+    background:white;
+}
+
+.calendario{
+    position:absolute;
+    top:76px;
+    left:0;
+    width:310px;
+    background:white;
+    border:2px solid rgba(7,85,160,.3);
+    border-radius:18px;
+    padding:15px;
+    box-shadow:0 15px 35px rgba(0,50,100,.3);
+    z-index:200;
+    display:none;
+}
+
+.calendario.abierto{
+    display:block;
+    animation:fadeIn .2s ease-out;
+}
+
+.calendario-cabecera{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.calendario-cabecera button{
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:9px;
+    background:#0755A0;
+    color:white;
+    font-size:19px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.calendario-cabecera button:hover{
+    background:#0b78bd;
+    transform:scale(1.05);
+}
+
+.mes-anio{
+    color:#06498d;
+    font-size:15px;
+    font-weight:bold;
+    text-transform:capitalize;
+}
+
+.dias-semana{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:4px;
+    margin-bottom:5px;
+}
+
+.dias-semana div{
+    text-align:center;
+    color:#0755A0;
+    font-size:11px;
+    font-weight:bold;
+    padding:5px 0;
+}
+
+.dias{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:4px;
+}
+
+.dia{
+    height:34px;
+    border:none;
+    border-radius:8px;
+    background:#f1f9fd;
+    color:#31566b;
+    cursor:pointer;
+    font-size:12px;
+    transition:.2s;
+}
+
+.dia:hover{
+    background:#bfe8f7;
+}
+
+.dia.hoy{
+    border:2px solid #0755A0;
+    font-weight:bold;
+}
+
+.dia.seleccionado{
+    background:#0755A0;
+    color:white;
+}
+
+.dia.deshabilitado{
+    color:#b8c4ca;
+    background:#f5f5f5;
+    cursor:not-allowed;
+}
+
+.dia.vacio{
+    background:transparent;
+    cursor:default;
+}
+
+.boton-reservar{
+    width:100%;
+    margin-top:23px;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    color:white;
+    background:linear-gradient(135deg,#06498d,#0b78bd,#159bd0);
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:.5px;
+    cursor:pointer;
+    box-shadow:0 7px 18px rgba(0,65,115,.25);
+    transition:all .3s ease;
+}
+
+.boton-reservar:hover{
+    transform:translateY(-3px);
+    box-shadow:0 11px 25px rgba(0,65,115,.35);
+    background:linear-gradient(135deg,#053d78,#0755A0,#21a8d8);
+}
+
+.mensaje{
+    display:none;
+    margin-top:18px;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(7,85,160,.1);
+    border:1px solid rgba(7,85,160,.25);
+    color:#06498d;
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+}
+
+@media(max-width:900px){
+
+    .pagina{
+        padding:25px 18px 50px;
+    }
+
+    .encabezado{
+        margin-top:70px;
+    }
+
+    .encabezado h1{
+        font-size:35px;
+    }
+
+    .reserva{
+        grid-template-columns:1fr;
+    }
+
+    .imagen-cita{
+        height:350px;
+    }
+}
+
+@media(max-width:600px){
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .campo-completo{
+        grid-column:auto;
+    }
+
+    .beneficios{
+        grid-template-columns:1fr;
+    }
+
+    .beneficio{
+        border-right:none;
+        border-bottom:1px solid rgba(7,85,160,.2);
+    }
+
+    .beneficio:last-child{
+        border-bottom:none;
+    }
+
+    .formulario{
+        padding:22px;
+    }
+
+    .imagen-cita{
+        height:280px;
+    }
+
+    .calendario{
+        width:100%;
+        max-width:310px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section class="pagina">
+
+<button class="menu-boton" onclick="abrirMenu(this)">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+<nav class="menu-desplegable" id="menu">
+
+<img class="logo-menu" src="logo-clinica.jpg.png" alt="Logo Policonsultorio Señor de Lagunas">
+
+<div class="nombre-clinica">
+POLICONSULTORIO SEÑOR DE LAGUNAS
+</div>
+
+<a href="index.html">INICIO</a>
+<a href="servicios.html">SERVICIOS</a>
+<a href="especialistas.html">ESPECIALISTAS</a>
+<a href="nosotros.html">NOSOTROS</a>
+
+</nav>
+
+<div class="encabezado">
+
+<h1>CITAS MÉDICAS</h1>
+
+<p>Reserva tu cita médica</p>
+
+</div>
+
+<div class="contenido">
+
+<div class="reserva">
+
+<div class="presentacion">
+
+<div class="imagen-cita">
+
+<img src="imagen-citas.jpg" alt="Policonsultorio Señor de Lagunas">
+
+</div>
+
+<h2>Agenda tu cita médica</h2>
+
+<p>
+Solicita tu cita de manera rápida y sencilla.
+Completa tus datos y selecciona la especialidad y el médico
+que deseas consultar.
+</p>
+
+<div class="beneficios">
+
+<div class="beneficio">
+
+<div class="icono">+</div>
+
+<h3>Atención médica</h3>
+
+<p>
+Profesionales preparados para cuidar tu salud.
+</p>
+
+</div>
+
+<div class="beneficio">
+
+<div class="icono">✓</div>
+
+<h3>Reserva sencilla</h3>
+
+<p>
+Solicita tu cita de forma rápida.
+</p>
+
+</div>
+
+<div class="beneficio">
+
+<div class="icono">♥</div>
+
+<h3>Tu bienestar</h3>
+
+<p>
+Tu salud es nuestra prioridad.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="formulario">
+
+<h2>Reserva tu cita</h2>
+
+<p class="subtitulo-formulario">
+Completa el formulario con tus datos para solicitar
+una cita médica.
+</p>
+
+<form onsubmit="reservarCita(event)">
+
+<div class="form-grid">
+
+<div class="campo">
+
+<label>Nombre completo</label>
+
+<input
+type="text"
+id="nombre"
+placeholder="Escribe tu nombre"
+required>
+
+</div>
+
+<div class="campo campo-fecha">
+
+<label>Fecha de nacimiento</label>
+
+<div class="fecha-visual" id="fechaNacimientoVisual" onclick="abrirCalendario('nacimiento')">
+Selecciona una fecha
+</div>
+
+<div class="calendario" id="calendarioNacimiento">
+
+<div class="calendario-cabecera">
+
+<button type="button" onclick="cambiarMes('nacimiento',-1)">‹</button>
+
+<div class="mes-anio" id="mesNacimiento"></div>
+
+<button type="button" onclick="cambiarMes('nacimiento',1)">›</button>
+
+</div>
+
+<div class="dias-semana">
+<div>Lun</div>
+<div>Mar</div>
+<div>Mié</div>
+<div>Jue</div>
+<div>Vie</div>
+<div>Sáb</div>
+<div>Dom</div>
+</div>
+
+<div class="dias" id="diasNacimiento"></div>
+
+</div>
+
+<input type="hidden" id="fechaNacimiento" required>
+
+</div>
+
+<div class="campo">
+
+<label>Teléfono</label>
+
+<input
+type="tel"
+id="telefono"
+placeholder="+591"
+required>
+
+</div>
+
+<div class="campo">
+
+<label>Especialidad</label>
+
+<select id="especialidad" required>
+
+<option value="">Selecciona una especialidad</option>
+<option>Medicina General</option>
+<option>Pediatría</option>
+<option>Endocrinología</option>
+<option>Dermatología</option>
+<option>Traumatología</option>
+<option>Fisioterapia</option>
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label>Médico</label>
+
+<select id="medico" required>
+
+<option value="">Selecciona un médico</option>
+<option>Dr. Ariel Mendoza</option>
+<option>Dra. Angela Llanque Solíz</option>
+<option>Dr. Mauricio Tola</option>
+<option>Jorge Escalera</option>
+<option>Miguel Laca Jiménez</option>
+<option>Dra. Laura Fernández</option>
+
+</select>
+
+</div>
+
+<div class="campo campo-fecha">
+
+<label>Fecha de la cita</label>
+
+<div class="fecha-visual" id="fechaCitaVisual" onclick="abrirCalendario('cita')">
+Selecciona una fecha
+</div>
+
+<div class="calendario" id="calendarioCita">
+
+<div class="calendario-cabecera">
+
+<button type="button" onclick="cambiarMes('cita',-1)">‹</button>
+
+<div class="mes-anio" id="mesCita"></div>
+
+<button type="button" onclick="cambiarMes('cita',1)">›</button>
+
+</div>
+
+<div class="dias-semana">
+<div>Lun</div>
+<div>Mar</div>
+<div>Mié</div>
+<div>Jue</div>
+<div>Vie</div>
+<div>Sáb</div>
+<div>Dom</div>
+</div>
+
+<div class="dias" id="diasCita"></div>
+
+</div>
+
+<input type="hidden" id="fechaCita" required>
+
+</div>
+
+<div class="campo">
+
+<label>Hora</label>
+
+<select id="hora" required>
+
+<option value="">Selecciona una hora</option>
+<option>08:00</option>
+<option>09:00</option>
+<option>10:00</option>
+<option>11:00</option>
+<option>14:00</option>
+<option>15:00</option>
+<option>16:00</option>
+<option>17:00</option>
+<option>18:00</option>
+
+</select>
+
+</div>
+
+<div class="campo campo-completo">
+
+<label>Motivo de consulta</label>
+
+<textarea
+id="motivo"
+placeholder="Escribe brevemente el motivo de tu consulta"></textarea>
+
+</div>
+
+</div>
+
+<button class="boton-reservar" type="submit">
+SOLICITAR CITA
+</button>
+
+<div class="mensaje" id="mensaje"></div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import { getFirestore, collection, addDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyB8tas7ZtpJVcHlvRhVwcolAmZRH4SAVe4",
+
+    authDomain: "policonsultorio-de-lagunas.firebaseapp.com",
+
+    projectId: "policonsultorio-de-lagunas",
+
+    storageBucket: "policonsultorio-de-lagunas.firebasestorage.app",
+
+    messagingSenderId: "649464859391",
+
+    appId: "1:649464859391:web:b3fc9a978fbf1d44809aca",
+
+    measurementId: "G-DLCS49ENX8"
+
+};
+
+const app=initializeApp(firebaseConfig);
+
+const db=getFirestore(app);
+
+window.abrirMenu=function(btn){
+
+    const menu=document.getElementById("menu");
+
+    menu.classList.toggle("abierto");
+
+    btn.classList.toggle("activo");
+
+};
+
+const meses=[
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre"
+];
+
+let calendarioNacimiento=new Date();
+
+let calendarioCita=new Date();
+
+window.abrirCalendario=function(tipo){
+
+    const calendario=document.getElementById(
+        tipo==="nacimiento"
+        ? "calendarioNacimiento"
+        : "calendarioCita"
+    );
+
+    const otro=document.getElementById(
+        tipo==="nacimiento"
+        ? "calendarioCita"
+        : "calendarioNacimiento"
+    );
+
+    otro.classList.remove("abierto");
+
+    calendario.classList.toggle("abierto");
+
+    if(calendario.classList.contains("abierto")){
+
+        mostrarCalendario(tipo);
+
+    }
+
+};
+
+window.cambiarMes=function(tipo,cambio){
+
+    if(tipo==="nacimiento"){
+
+        calendarioNacimiento.setMonth(
+            calendarioNacimiento.getMonth()+cambio
+        );
+
+    }else{
+
+        calendarioCita.setMonth(
+            calendarioCita.getMonth()+cambio
+        );
+
+    }
+
+    mostrarCalendario(tipo);
+
+};
+
+function mostrarCalendario(tipo){
+
+    const fecha=
+        tipo==="nacimiento"
+        ? calendarioNacimiento
+        : calendarioCita;
+
+    const mes=fecha.getMonth();
+
+    const anio=fecha.getFullYear();
+
+    const nombreMes=document.getElementById(
+        tipo==="nacimiento"
+        ? "mesNacimiento"
+        : "mesCita"
+    );
+
+    const contenedor=document.getElementById(
+        tipo==="nacimiento"
+        ? "diasNacimiento"
+        : "diasCita"
+    );
+
+    nombreMes.textContent=meses[mes]+" "+anio;
+
+    contenedor.innerHTML="";
+
+    const primerDia=new Date(anio,mes,1).getDay();
+
+    const inicio=primerDia===0 ? 6 : primerDia-1;
+
+    const cantidadDias=new Date(anio,mes+1,0).getDate();
+
+    const hoy=new Date();
+
+    for(let i=0;i<inicio;i++){
+
+        const vacio=document.createElement("button");
+
+        vacio.type="button";
+
+        vacio.className="dia vacio";
+
+        contenedor.appendChild(vacio);
+
+    }
+
+    for(let dia=1;dia<=cantidadDias;dia++){
+
+        const boton=document.createElement("button");
+
+        boton.type="button";
+
+        boton.className="dia";
+
+        boton.textContent=dia;
+
+        const fechaDia=new Date(anio,mes,dia);
+
+        if(
+            dia===hoy.getDate() &&
+            mes===hoy.getMonth() &&
+            anio===hoy.getFullYear()
+        ){
+
+            boton.classList.add("hoy");
+
+        }
+
+        if(tipo==="cita"){
+
+            const hoySinHora=new Date(
+                hoy.getFullYear(),
+                hoy.getMonth(),
+                hoy.getDate()
+            );
+
+            if(fechaDia<hoySinHora){
+
+                boton.classList.add("deshabilitado");
+
+                boton.disabled=true;
+
+            }
+
+        }
+
+        const valor=
+            anio+"-"+
+            String(mes+1).padStart(2,"0")+"-"+
+            String(dia).padStart(2,"0");
+
+        const campo=
+            tipo==="nacimiento"
+            ? document.getElementById("fechaNacimiento").value
+            : document.getElementById("fechaCita").value;
+
+        if(campo===valor){
+
+            boton.classList.add("seleccionado");
+
+        }
+
+        boton.onclick=function(){
+
+            seleccionarFecha(tipo,fechaDia,valor);
+
+        };
+
+        contenedor.appendChild(boton);
+
+    }
+
+}
+
+function seleccionarFecha(tipo,fecha,valor){
+
+    const texto=
+        String(fecha.getDate()).padStart(2,"0")+
+        " de "+
+        meses[fecha.getMonth()]+
+        " de "+
+        fecha.getFullYear();
+
+    if(tipo==="nacimiento"){
+
+        document.getElementById("fechaNacimiento").value=valor;
+
+        document.getElementById("fechaNacimientoVisual").textContent=texto;
+
+        document.getElementById("calendarioNacimiento").classList.remove("abierto");
+
+    }else{
+
+        document.getElementById("fechaCita").value=valor;
+
+        document.getElementById("fechaCitaVisual").textContent=texto;
+
+        document.getElementById("calendarioCita").classList.remove("abierto");
+
+    }
+
+}
+
+document.addEventListener("click",function(event){
+
+    if(!event.target.closest(".campo-fecha")){
+
+        document.getElementById("calendarioNacimiento").classList.remove("abierto");
+
+        document.getElementById("calendarioCita").classList.remove("abierto");
+
+    }
+
+});
+
+window.reservarCita=async function(event){
+
+    event.preventDefault();
+
+    const formulario=event.target;
+
+    const mensaje=document.getElementById("mensaje");
+
+    const nombre=document.getElementById("nombre").value.trim();
+
+    const fechaNacimiento=document.getElementById("fechaNacimiento").value;
+
+    const telefono=document.getElementById("telefono").value.trim();
+
+    const especialidad=document.getElementById("especialidad").value;
+
+    const medico=document.getElementById("medico").value;
+
+    const fechaCita=document.getElementById("fechaCita").value;
+
+    const hora=document.getElementById("hora").value;
+
+    const motivo=document.getElementById("motivo").value.trim();
+
+    if(!fechaNacimiento){
+
+        alert("Selecciona la fecha de nacimiento.");
+
+        return;
+
+    }
+
+    if(!fechaCita){
+
+        alert("Selecciona la fecha de la cita.");
+
+        return;
+
+    }
+
+    try{
+
+        await addDoc(collection(db,"citas"),{
+
+            nombre:nombre,
+
+            fechaNacimiento:fechaNacimiento,
+
+            telefono:telefono,
+
+            especialidad:especialidad,
+
+            medico:medico,
+
+            fechaCita:fechaCita,
+
+            hora:hora,
+
+            motivo:motivo,
+
+            estado:"pendiente",
+
+            fechaRegistro:serverTimestamp()
+
+        });
+
+        mensaje.textContent=
+            "Tu solicitud de cita ha sido registrada correctamente.";
+
+        mensaje.style.display="block";
+
+        formulario.reset();
+
+        document.getElementById("fechaNacimiento").value="";
+
+        document.getElementById("fechaCita").value="";
+
+        document.getElementById("fechaNacimientoVisual").textContent=
+            "Selecciona una fecha";
+
+        document.getElementById("fechaCitaVisual").textContent=
+            "Selecciona una fecha";
+
+    }catch(error){
+
+        console.error(error);
+
+        mensaje.textContent=
+            "No se pudo registrar la cita. Verifica la conexión con la base de datos.";
+
+        mensaje.style.display="block";
+
+    }
+
+};
+
+mostrarCalendario("nacimiento");
+
+mostrarCalendario("cita");
+
+</script>
+
+</body>
+</html>

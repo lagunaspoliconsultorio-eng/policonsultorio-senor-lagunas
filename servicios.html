@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicios | Policonsultorio Señor de Lagunas</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#bfe8f7;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes flotar{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+    100%{transform:translateY(0);}
+}
+
+.servicios{
+    min-height:100vh;
+    padding:55px 50px 70px;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 8% 15%,rgba(255,255,255,.85),transparent 25%),
+        radial-gradient(circle at 92% 85%,rgba(0,126,190,.25),transparent 35%),
+        repeating-linear-gradient(
+            135deg,
+            transparent 0px,
+            transparent 55px,
+            rgba(7,85,160,.035) 56px,
+            rgba(7,85,160,.035) 58px
+        ),
+        linear-gradient(135deg,#dff7ff 0%,#a9dff2 45%,#c8edf9 100%);
+}
+
+.servicios::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    border-radius:50%;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent 0px,
+            transparent 35px,
+            rgba(7,85,160,.08) 36px,
+            rgba(7,85,160,.08) 38px
+        );
+    top:-260px;
+    right:-170px;
+    transform:rotate(12deg);
+    opacity:.65;
+}
+
+.servicios::after{
+    content:"";
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:
+        repeating-linear-gradient(
+            -45deg,
+            transparent 0px,
+            transparent 38px,
+            rgba(11,120,189,.07) 39px,
+            rgba(11,120,189,.07) 41px
+        );
+    bottom:-250px;
+    left:-180px;
+    transform:rotate(-10deg);
+    opacity:.7;
+}
+
+.menu-boton{
+    position:absolute;
+    top:25px;
+    right:30px;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:rgba(6,73,141,.85);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:2px solid rgba(255,255,255,.8);
+    box-shadow:0 7px 20px rgba(0,55,110,.35);
+    cursor:pointer;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    transition:all .3s ease;
+}
+
+.menu-boton:hover{
+    transform:scale(1.08);
+    background:#1591c8;
+    border-color:white;
+}
+
+.menu-boton span{
+    width:25px;
+    height:3px;
+    background:white;
+    border-radius:5px;
+    transition:all .3s ease;
+}
+
+.menu-boton.activo span:nth-child(1){
+    transform:translateY(8px) rotate(45deg);
+}
+
+.menu-boton.activo span:nth-child(2){
+    opacity:0;
+}
+
+.menu-boton.activo span:nth-child(3){
+    transform:translateY(-8px) rotate(-45deg);
+}
+
+.menu-desplegable{
+    position:absolute;
+    top:90px;
+    right:30px;
+    width:220px;
+    padding:18px;
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border:2px solid rgba(7,85,160,.4);
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,50,100,.3);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-15px) scale(.95);
+    transition:all .4s ease;
+    z-index:100;
+}
+
+.menu-desplegable.abierto{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
+}
+
+.logo-menu{
+    width:68px;
+    height:68px;
+    margin:3px auto 10px;
+    border-radius:50%;
+    object-fit:cover;
+    background:#dff7ff;
+    border:2px solid #0755A0;
+    display:block;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.nombre-clinica{
+    text-align:center;
+    color:#0755A0;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:12px;
+    letter-spacing:.5px;
+}
+
+.menu-desplegable a{
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#0755A0,#0b78bd);
+    padding:11px;
+    margin:8px 0;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:bold;
+    transition:all .3s ease;
+    box-shadow:0 4px 10px rgba(0,50,100,.15);
+}
+
+.menu-desplegable a:hover{
+    background:#1591c8;
+    transform:translateX(5px);
+}
+
+.titulo-servicios{
+    position:relative;
+    z-index:5;
+    margin:5px 0 0 25px;
+    padding:20px 28px;
+    max-width:700px;
+    border-left:8px solid #0755A0;
+    background:rgba(255,255,255,.45);
+    backdrop-filter:blur(10px);
+    border-radius:0 18px 18px 0;
+    box-shadow:0 8px 25px rgba(0,70,120,.08);
+    animation:fadeIn .8s ease-out forwards;
+}
+
+.titulo-servicios h1{
+    color:#06498d;
+    font-size:48px;
+    letter-spacing:1.5px;
+}
+
+.titulo-servicios p{
+    margin-top:8px;
+    color:#2a5970;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.linea{
+    position:relative;
+    z-index:5;
+    width:140px;
+    height:5px;
+    background:linear-gradient(90deg,#06498d,#21a8d8);
+    border-radius:10px;
+    margin:22px 0 32px 25px;
+}
+
+.presentacion{
+    position:relative;
+    z-index:5;
+    max-width:850px;
+    margin:0 auto 40px;
+    padding:25px 35px;
+    text-align:center;
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.9);
+    border-radius:22px;
+    box-shadow:0 10px 30px rgba(0,70,120,.12);
+    animation:fadeIn 1s ease-out forwards;
+}
+
+.presentacion h2{
+    font-size:30px;
+    color:#06498d;
+    margin-bottom:10px;
+}
+
+.presentacion p{
+    color:#365e70;
+    font-size:15px;
+    line-height:1.6;
+}
+
+.servicios-grid{
+    position:relative;
+    z-index:5;
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+}
+
+.servicio-card{
+    min-height:480px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    background:linear-gradient(145deg,rgba(247,253,255,.9),rgba(213,241,250,.9));
+    backdrop-filter:blur(8px);
+    border:2px solid rgba(22,137,189,.5);
+    border-radius:24px;
+    box-shadow:0 12px 28px rgba(0,70,120,.15);
+    transition:all .4s ease;
+    animation:fadeIn 1.2s ease-out forwards;
+}
+
+.servicio-card:nth-child(2),
+.servicio-card:nth-child(5){
+    background:linear-gradient(145deg,rgba(233,249,255,.9),rgba(188,229,244,.9));
+}
+
+.servicio-card:nth-child(3),
+.servicio-card:nth-child(6){
+    background:linear-gradient(145deg,rgba(223,245,252,.9),rgba(168,217,237,.9));
+}
+
+.servicio-card:hover{
+    transform:translateY(-10px) scale(1.01);
+    box-shadow:0 22px 40px rgba(0,65,115,.28);
+    border-color:#0755A0;
+}
+
+.servicio-card::before{
+    content:"ATENCIÓN MÉDICA";
+    position:absolute;
+    top:14px;
+    left:14px;
+    padding:7px 14px;
+    color:white;
+    background:linear-gradient(135deg,#06498d,#0b78bd);
+    border-radius:20px;
+    font-size:9px;
+    font-weight:bold;
+    letter-spacing:1px;
+    z-index:5;
+}
+
+.servicio-imagen{
+    width:100%;
+    height:195px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#c8edf9,#8ed0e7);
+    border-bottom:3px solid rgba(22,137,189,.4);
+}
+
+.servicio-imagen img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    transition:transform .5s ease;
+}
+
+.servicio-card:hover .servicio-imagen img{
+    transform:scale(1.05);
+}
+
+.servicio-contenido{
+    padding:20px 22px 10px;
+    text-align:center;
+    flex:1;
+}
+
+.servicio-card h3{
+    color:#06498d;
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.servicio-card p{
+    color:#4a6d82;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.boton-servicio{
+    display:block;
+    margin:10px 22px 20px;
+    padding:12px;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    background:linear-gradient(135deg,#06498d,#0b78bd,#159bd0);
+    border-radius:14px;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:.5px;
+    box-shadow:0 6px 16px rgba(0,65,115,.25);
+    transition:all .3s ease;
+}
+
+.boton-servicio:hover{
+    background:linear-gradient(135deg,#053d78,#0755A0,#21a8d8);
+    transform:translateY(-3px);
+    box-shadow:0 9px 20px rgba(0,65,115,.32);
+}
+
+.final-servicios{
+    position:relative;
+    z-index:5;
+    max-width:900px;
+    margin:50px auto 0;
+    padding:25px;
+    text-align:center;
+    background:linear-gradient(135deg,rgba(7,85,160,.95),rgba(11,120,189,.95));
+    border-radius:20px;
+    box-shadow:0 12px 30px rgba(0,55,105,.3);
+    animation:flotar 4s ease-in-out infinite;
+}
+
+.final-servicios h3{
+    color:white;
+    font-size:21px;
+    margin-bottom:8px;
+}
+
+.final-servicios p{
+    color:#dff7ff;
+    font-size:14px;
+}
+
+@media(max-width:950px){
+    .servicios-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+    .servicios{
+        padding:35px 18px 50px;
+    }
+
+    .titulo-servicios{
+        margin-left:0;
+        margin-top:60px;
+        padding-left:18px;
+    }
+
+    .titulo-servicios h1{
+        font-size:34px;
+    }
+
+    .titulo-servicios p{
+        font-size:13px;
+    }
+
+    .linea{
+        margin-left:0;
+    }
+
+    .presentacion{
+        padding:20px 18px;
+    }
+
+    .presentacion h2{
+        font-size:24px;
+    }
+
+    .servicios-grid{
+        grid-template-columns:1fr;
+        gap:22px;
+    }
+
+    .servicio-card p{
+        font-size:16px;
+    }
+
+    .menu-boton{
+        right:18px;
+        top:18px;
+    }
+
+    .menu-desplegable{
+        right:18px;
+        top:85px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<section class="servicios">
+
+<button class="menu-boton" onclick="abrirMenu(this)">
+<span></span>
+<span></span>
+<span></span>
+</button>
+
+<nav class="menu-desplegable" id="menu">
+
+<img class="logo-menu" src="logo-clinica.jpg.png" alt="Logo Policonsultorio">
+
+<div class="nombre-clinica">
+POLICONSULTORIO SEÑOR DE LAGUNAS
+</div>
+
+<a href="index.html">INICIO</a>
+<a href="especialistas.html">ESPECIALISTAS</a>
+<a href="nosotros.html">NOSOTROS</a>
+<a href="citas.html">CITAS MÉDICAS</a>
+
+</nav>
+
+<div class="titulo-servicios">
+<h1>Servicios</h1>
+<p>Atención médica pensada para cuidar de ti y de tu familia.</p>
+</div>
+
+<div class="linea"></div>
+
+<div class="presentacion">
+<h2>Nuestros servicios</h2>
+<p>
+Contamos con diferentes áreas de atención para ofrecer
+un servicio profesional, seguro y de calidad.
+</p>
+</div>
+
+<div class="servicios-grid">
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio1.jpg" alt="Medicina General">
+</div>
+<div class="servicio-contenido">
+<h3>Medicina General</h3>
+<p>Atención integral para la prevención, diagnóstico y cuidado de la salud.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio2.jpg" alt="Pediatría">
+</div>
+<div class="servicio-contenido">
+<h3>Pediatría</h3>
+<p>Cuidado médico especializado para niños y adolescentes.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio3.jpg" alt="Cardiología">
+</div>
+<div class="servicio-contenido">
+<h3>Cardiología</h3>
+<p>Evaluación y seguimiento especializado de la salud cardiovascular.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio4.jpg" alt="Dermatología">
+</div>
+<div class="servicio-contenido">
+<h3>Dermatología</h3>
+<p>Atención especializada para el cuidado y tratamiento de la piel.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio5.jpg" alt="Traumatología">
+</div>
+<div class="servicio-contenido">
+<h3>Traumatología</h3>
+<p>Evaluación y atención de lesiones y problemas del sistema musculoesquelético.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+<div class="servicio-card">
+<div class="servicio-imagen">
+<img src="servicio6.jpg" alt="Ginecología">
+</div>
+<div class="servicio-contenido">
+<h3>Ginecología</h3>
+<p>Atención especializada para el cuidado integral de la salud femenina.</p>
+</div>
+<a class="boton-servicio" href="especialistas.html">VER ESPECIALISTAS</a>
+</div>
+
+</div>
+
+<div class="final-servicios">
+<h3>Tu salud es nuestra prioridad</h3>
+<p>Conoce a nuestros especialistas y encuentra la atención que necesitas.</p>
+</div>
+
+</section>
+
+<script>
+function abrirMenu(btn){
+    const menu=document.getElementById("menu");
+    menu.classList.toggle("abierto");
+    btn.classList.toggle("activo");
+}
+</script>
+
+</body>
+</html>
