@@ -49,6 +49,52 @@ body{
         linear-gradient(135deg,#e5faff 0%,#b8e3f2 45%,#d5f2fb 100%);
 }
 
+/* Redes sociales */
+.redes-flotantes{
+    position:absolute;
+    top:18px;
+    left:20px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    z-index:101;
+}
+
+.red-social{
+    width:42px;
+    height:42px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    color:white;
+    text-decoration:none;
+    font-family:Arial,sans-serif;
+    font-size:23px;
+    font-weight:bold;
+    border:2px solid white;
+    box-shadow:0 4px 12px rgba(0,50,100,.2);
+    transition:transform .3s ease;
+}
+
+.red-social:hover{
+    transform:scale(1.08);
+}
+
+.whatsapp{
+    background:#25D366;
+}
+
+.facebook{
+    background:#1877F2;
+    font-size:27px;
+}
+
+.tiktok{
+    background:#111;
+    font-size:21px;
+}
+
 .menu-boton{
     position:absolute;
     top:25px;
@@ -241,28 +287,52 @@ body{
     transform:scale(1.03);
 }
 
+/* Botón compacto para acceder a la historia */
 .boton-conocenos{
     width:80%;
-    margin-top:25px;
-    padding:15px;
+    max-width:300px;
+    margin-top:18px;
+    padding:12px 16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
     text-align:center;
     text-decoration:none;
     color:white;
     background:linear-gradient(135deg,#06498d,#0b78bd,#159bd0);
-    border-radius:15px;
+    border-radius:14px;
     font-size:14px;
     font-weight:bold;
-    letter-spacing:.8px;
-    box-shadow:0 7px 18px rgba(0,65,115,.25);
-    border:1px solid rgba(255,255,255,.3);
+    letter-spacing:.5px;
+    box-shadow:0 6px 15px rgba(0,65,115,.22);
+    border:1px solid rgba(255,255,255,.4);
     transition:all .3s ease;
     cursor:pointer;
 }
 
 .boton-conocenos:hover{
-    transform:translateY(-4px);
-    box-shadow:0 11px 25px rgba(0,65,115,.35);
+    transform:translateY(-3px);
+    box-shadow:0 10px 22px rgba(0,65,115,.3);
     background:linear-gradient(135deg,#053d78,#0755A0,#21a8d8);
+}
+
+.boton-descripcion{
+    font-size:11px;
+    font-weight:normal;
+    letter-spacing:0;
+    line-height:1.35;
+    opacity:.95;
+}
+
+.boton-enlace{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    margin-top:2px;
+    font-size:12px;
+    font-weight:bold;
 }
 
 .mision-vision{
@@ -618,6 +688,7 @@ body{
 
     .principal{
         grid-template-columns:1fr;
+        gap:25px;
     }
 
     .imagen{
@@ -677,6 +748,66 @@ body{
     .titulo-extra h2{
         font-size:23px;
     }
+
+    .redes-flotantes{
+        top:20px;
+        left:18px;
+        gap:7px;
+    }
+
+    .red-social{
+        width:36px;
+        height:36px;
+        font-size:20px;
+    }
+
+    .facebook{
+        font-size:24px;
+    }
+
+    .tiktok{
+        font-size:18px;
+    }
+}
+
+@media(max-width:400px){
+    .pagina{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .redes-flotantes{
+        gap:5px;
+        left:12px;
+    }
+
+    .red-social{
+        width:32px;
+        height:32px;
+        font-size:18px;
+    }
+
+    .facebook{
+        font-size:22px;
+    }
+
+    .tiktok{
+        font-size:17px;
+    }
+
+    .menu-boton{
+        width:45px;
+        height:45px;
+        right:12px;
+    }
+
+    .encabezado h1{
+        font-size:29px;
+    }
+
+    .seccion h2{
+        font-size:27px;
+    }
 }
 </style>
 </head>
@@ -685,7 +816,13 @@ body{
 
 <section class="pagina">
 
-<button class="menu-boton" onclick="abrirMenu(this)">
+<div class="redes-flotantes">
+    <a class="red-social whatsapp" href="https://wa.me/59176513508" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp">W</a>
+    <a class="red-social facebook" href="https://www.facebook.com/share/1TS7a4vHWQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">f</a>
+    <a class="red-social tiktok" href="https://www.tiktok.com/@seordelagunas?_r=1&_t=ZS-9AXEFv8emtW" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">♪</a>
+</div>
+
+<button class="menu-boton" onclick="abrirMenu(this)" aria-label="Abrir menú">
 <span></span>
 <span></span>
 <span></span>
@@ -723,8 +860,10 @@ POLICONSULTORIO SEÑOR DE LAGUNAS
 <img src="imagen-nosotros.jpg" alt="Policonsultorio Señor de Lagunas">
 </div>
 
-<a class="boton-conocenos" onclick="mostrarHistoria()">
-CONÓCENOS
+<a class="boton-conocenos" href="#" onclick="mostrarHistoria(); return false;">
+    <span>CONÓCENOS</span>
+    <span class="boton-descripcion">Nuestra historia, actividades y reconocimientos</span>
+    <span class="boton-enlace">Ver más <span aria-hidden="true">→</span></span>
 </a>
 
 </div>
@@ -805,7 +944,8 @@ Encuentra nuestra ubicación y conoce cómo llegar al Policonsultorio Señor de 
 <iframe
 class="mapa"
 src="https://www.google.com/maps/embed?pb=!4v1!6m8!1m7!1sJEDTWWXy-QulhvI79VI9ew!2m2!1d-17.9574413!2d-67.1064606!3f131.77!4f20!5f0.7820865974627469"
-loading="lazy">
+loading="lazy"
+title="Ubicación del Policonsultorio Señor de Lagunas">
 </iframe>
 
 </div>
@@ -986,7 +1126,6 @@ VOLVER A NOSOTROS
 </section>
 
 <script>
-
 function abrirMenu(btn){
     const menu=document.getElementById("menu");
     menu.classList.toggle("abierto");
@@ -1004,7 +1143,6 @@ function volverNosotros(){
     document.getElementById("paginaNosotros").style.display="block";
     window.scrollTo(0,0);
 }
-
 </script>
 
 </body>

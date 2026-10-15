@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración | Policonsultorio Señor de Lagunas</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #17344b;
+    background: linear-gradient(135deg, #dff5fc, #bfe5f4, #d7f2fb);
+    min-height: 100vh;
+}
+
+header {
+    background: #0755a0;
+    color: white;
+    padding: 22px 16px;
+    text-align: center;
+    box-shadow: 0 4px 15px #0755a033;
+}
+
+header h1 {
+    margin: 0 0 8px;
+    font-size: 25px;
+}
+
+header p {
+    margin: 0;
+    font-size: 14px;
+}
+
+main {
+    width: min(1100px, 94%);
+    margin: 30px auto;
+}
+
+.panel {
+    background: #ffffffd9;
+    border: 1px solid #ffffff;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 8px 25px #174c6b18;
+    margin-bottom: 22px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #0755a0;
+}
+
+#login {
+    max-width: 430px;
+    margin: 35px auto;
+}
+
+label {
+    display: block;
+    margin: 15px 0 7px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #aacbdc;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.principal {
+    background: #0755a0;
+    color: white;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.salir {
+    background: #e8f2f8;
+    color: #0755a0;
+}
+
+.confirmar {
+    background: #d8f5e2;
+    color: #176b36;
+}
+
+.cancelar {
+    background: #ffe2e2;
+    color: #a32020;
+}
+
+.mensaje {
+    margin-top: 15px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.oculto {
+    display: none !important;
+}
+
+.cabecera-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+}
+
+th, td {
+    padding: 13px 10px;
+    border-bottom: 1px solid #d5e6ef;
+    text-align: left;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+th {
+    color: #0755a0;
+    background: #eaf6fc;
+}
+
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.estado {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 20px;
+    background: #fff0c9;
+    color: #765400;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.estado-confirmada {
+    background: #d8f5e2;
+    color: #176b36;
+}
+
+.estado-cancelada {
+    background: #ffe2e2;
+    color: #a32020;
+}
+
+#resumen {
+    color: #365b73;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #365b73;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 21px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Policonsultorio Señor de Lagunas</h1>
+    <p>Panel de administración de citas médicas</p>
+</header>
+
+<main>
+    <section id="login" class="panel">
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa con tu cuenta autorizada para gestionar las solicitudes.</p>
+
+        <form id="formLogin">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" type="email" autocomplete="username" required>
+
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" type="password"
+                   autocomplete="current-password" required>
+
+            <button class="principal" id="botonLogin" type="submit">
+                Entrar al panel
+            </button>
+        </form>
+
+        <p id="mensajeLogin" class="mensaje" role="status"></p>
+    </section>
+
+    <section id="panelCitas" class="panel oculto">
+        <div class="cabecera-panel">
+            <div>
+                <h2>Solicitudes de citas</h2>
+                <p id="resumen">Cargando solicitudes...</p>
+            </div>
+            <button id="botonSalir" class="salir" type="button">
+                Cerrar sesión
+            </button>
+        </div>
+
+        <p id="mensajePanel" class="mensaje" role="status"></p>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Contacto</th>
+                        <th>Especialidad y médico</th>
+                        <th>Fecha y hora</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="listaCitas"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    Administración de citas · Policonsultorio Señor de Lagunas
+</footer>
+
+<script type="module">
+import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    doc,
+    updateDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB8tas7ZtpJVcHlvRhVwcolAmZRH4SAVe4",
+    authDomain: "policonsultorio-de-lagunas.firebaseapp.com",
+    projectId: "policonsultorio-de-lagunas",
+    storageBucket: "policonsultorio-de-lagunas.firebasestorage.app",
+    messagingSenderId: "649464859391",
+    appId: "1:649464859391:web:b3fc9a978fbf1d44809aca",
+    measurementId: "G-DLCS49ENX8"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const login = document.getElementById("login");
+const panelCitas = document.getElementById("panelCitas");
+const formLogin = document.getElementById("formLogin");
+const correo = document.getElementById("correo");
+const contrasena = document.getElementById("contrasena");
+const botonLogin = document.getElementById("botonLogin");
+const mensajeLogin = document.getElementById("mensajeLogin");
+const mensajePanel = document.getElementById("mensajePanel");
+const listaCitas = document.getElementById("listaCitas");
+const resumen = document.getElementById("resumen");
+
+let detenerCitas = null;
+let usuarioActual = null;
+let procesando = false;
+
+function mostrarMensaje(elemento, texto) {
+    elemento.textContent = texto;
+}
+
+function celda(texto) {
+    const td = document.createElement("td");
+    td.textContent = texto || "No indicado";
+    return td;
+}
+
+function traducirError(error) {
+    const errores = {
+        "auth/invalid-credential":
+            "Correo o contraseña incorrectos.",
+        "auth/invalid-email":
+            "El correo electrónico no es válido.",
+        "auth/too-many-requests":
+            "Demasiados intentos. Espera un momento e inténtalo otra vez.",
+        "auth/network-request-failed":
+            "No hay conexión. Comprueba tu internet."
+    };
+
+    return errores[error.code] ||
+        "No se pudo completar la operación. Revisa la configuración de Firebase.";
+}
+
+formLogin.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (procesando) return;
+    procesando = true;
+    botonLogin.disabled = true;
+    mostrarMensaje(mensajeLogin, "Verificando acceso...");
+
+    try {
+        await signInWithEmailAndPassword(
+            auth,
+            correo.value.trim(),
+            contrasena.value
+        );
+        contrasena.value = "";
+    } catch (error) {
+        mostrarMensaje(mensajeLogin, traducirError(error));
+    } finally {
+        procesando = false;
+        botonLogin.disabled = false;
+    }
+});
+
+onAuthStateChanged(auth, (user) => {
+    if (detenerCitas) {
+        detenerCitas();
+        detenerCitas = null;
+    }
+
+    usuarioActual = user;
+    listaCitas.replaceChildren();
+    mostrarMensaje(mensajePanel, "");
+
+    if (!user) {
+        login.classList.remove("oculto");
+        panelCitas.classList.add("oculto");
+        mostrarMensaje(mensajeLogin, "");
+        return;
+    }
+
+    login.classList.add("oculto");
+    panelCitas.classList.remove("oculto");
+    resumen.textContent = "Comprobando permisos y cargando citas...";
+
+    detenerCitas = onSnapshot(
+        collection(db, "citas"),
+        (snapshot) => {
+            if (auth.currentUser?.uid !== user.uid) return;
+
+            listaCitas.replaceChildren();
+
+            if (snapshot.empty) {
+                resumen.textContent = "Todavía no hay solicitudes.";
+                return;
+            }
+
+            const documentos = snapshot.docs.slice().sort((a, b) => {
+                const fechaA = a.data().fechaCita || "";
+                const fechaB = b.data().fechaCita || "";
+                return fechaA.localeCompare(fechaB);
+            });
+
+            let pendientes = 0;
+
+            documentos.forEach((documento) => {
+                const cita = documento.data();
+                const fila = document.createElement("tr");
+                const estado = cita.estado || "pendiente";
+
+                if (estado === "pendiente") pendientes++;
+
+                fila.append(
+                    celda(cita.nombre),
+                    celda(cita.telefono),
+                    celda(
+                        (cita.especialidad || "No indicada") +
+                        " · " + (cita.medico || "No asignado")
+                    ),
+                    celda(
+                        (cita.fechaCita || "Sin fecha") +
+                        " · " + (cita.hora || "Sin hora")
+                    ),
+                    celda(cita.motivo)
+                );
+
+                const celdaEstado = document.createElement("td");
+                const etiqueta = document.createElement("span");
+                etiqueta.className = "estado";
+
+                if (estado === "confirmada") {
+                    etiqueta.classList.add("estado-confirmada");
+                } else if (estado === "cancelada") {
+                    etiqueta.classList.add("estado-cancelada");
+                }
+
+                etiqueta.textContent = estado;
+                celdaEstado.append(etiqueta);
+                fila.append(celdaEstado);
+
+                const celdaAcciones = document.createElement("td");
+                const acciones = document.createElement("div");
+                acciones.className = "acciones";
+
+                if (estado === "pendiente") {
+                    const botonConfirmar = document.createElement("button");
+                    botonConfirmar.className = "confirmar";
+                    botonConfirmar.textContent = "Confirmar";
+                    botonConfirmar.addEventListener("click", () => {
+                        cambiarEstado(documento.id, "confirmada", botonConfirmar);
+                    });
+
+                    const botonCancelar = document.createElement("button");
+                    botonCancelar.className = "cancelar";
+                    botonCancelar.textContent = "Cancelar";
+                    botonCancelar.addEventListener("click", () => {
+                        cambiarEstado(documento.id, "cancelada", botonCancelar);
+                    });
+
+                    acciones.append(botonConfirmar, botonCancelar);
+                } else {
+                    acciones.textContent = "Sin acciones";
+                }
+
+                celdaAcciones.append(acciones);
+                fila.append(celdaAcciones);
+                listaCitas.append(fila);
+            });
+
+            resumen.textContent =
+                documentos.length + " solicitud(es) · " +
+                pendientes + " pendiente(s)";
+        },
+        (error) => {
+            listaCitas.replaceChildren();
+            resumen.textContent = "No se pudieron cargar las citas.";
+            mostrarMensaje(
+                mensajePanel,
+                error.code === "permission-denied"
+                    ? "Acceso denegado. Comprueba que el UID de tu usuario coincida con el documento de administradores y que las reglas estén publicadas."
+                    : "Error al consultar Firestore. Revisa la conexión y la configuración."
+            );
+        }
+    );
+});
+
+async function cambiarEstado(id, estado, boton) {
+    if (!usuarioActual || procesando) return;
+
+    if (!confirm("¿Quieres cambiar el estado de esta cita a " + estado + "?")) {
+        return;
+    }
+
+    procesando = true;
+    boton.disabled = true;
+    mostrarMensaje(mensajePanel, "Guardando cambio...");
+
+    try {
+        await updateDoc(doc(db, "citas", id), {
+            estado: estado,
+            fechaActualizacion: serverTimestamp()
+        });
+
+        mostrarMensaje(mensajePanel, "Estado actualizado correctamente.");
+    } catch (error) {
+        mostrarMensaje(
+            mensajePanel,
+            error.code === "permission-denied"
+                ? "No tienes permiso para cambiar esta cita. Comprueba la sesión y las reglas."
+                : "No se pudo actualizar el estado. Inténtalo nuevamente."
+        );
+    } finally {
+        procesando = false;
+        boton.disabled = false;
+    }
+}
+
+document.getElementById("botonSalir").addEventListener("click", async () => {
+    if (detenerCitas) {
+        detenerCitas();
+        detenerCitas = null;
+    }
+
+    await signOut(auth);
+});
+</script>
+
+</body>
+</html>

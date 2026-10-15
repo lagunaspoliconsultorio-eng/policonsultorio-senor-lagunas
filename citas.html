@@ -44,6 +44,52 @@ body{
         linear-gradient(135deg,#e5faff 0%,#b8e3f2 45%,#d5f2fb 100%);
 }
 
+/* Redes sociales */
+.redes-flotantes{
+    position:absolute;
+    top:18px;
+    left:20px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    z-index:101;
+}
+
+.red-social{
+    width:42px;
+    height:42px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    color:white;
+    text-decoration:none;
+    font-family:Arial,sans-serif;
+    font-size:23px;
+    font-weight:bold;
+    border:2px solid white;
+    box-shadow:0 4px 12px rgba(0,50,100,.2);
+    transition:transform .3s ease;
+}
+
+.red-social:hover{
+    transform:scale(1.08);
+}
+
+.whatsapp{
+    background:#25D366;
+}
+
+.facebook{
+    background:#1877F2;
+    font-size:27px;
+}
+
+.tiktok{
+    background:#111;
+    font-size:21px;
+}
+
 .menu-boton{
     position:absolute;
     top:25px;
@@ -599,6 +645,63 @@ body{
         width:100%;
         max-width:310px;
     }
+
+    .redes-flotantes{
+        top:20px;
+        left:18px;
+        gap:7px;
+    }
+
+    .red-social{
+        width:36px;
+        height:36px;
+        font-size:20px;
+    }
+
+    .facebook{
+        font-size:24px;
+    }
+
+    .tiktok{
+        font-size:18px;
+    }
+}
+
+@media(max-width:400px){
+
+    .pagina{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .redes-flotantes{
+        gap:5px;
+        left:12px;
+    }
+
+    .red-social{
+        width:32px;
+        height:32px;
+        font-size:18px;
+    }
+
+    .facebook{
+        font-size:22px;
+    }
+
+    .tiktok{
+        font-size:17px;
+    }
+
+    .menu-boton{
+        width:45px;
+        height:45px;
+        right:12px;
+    }
+
+    .encabezado h1{
+        font-size:29px;
+    }
 }
 </style>
 </head>
@@ -607,7 +710,13 @@ body{
 
 <section class="pagina">
 
-<button class="menu-boton" onclick="abrirMenu(this)">
+<div class="redes-flotantes">
+    <a class="red-social whatsapp" href="https://wa.me/59176513508" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp">W</a>
+    <a class="red-social facebook" href="https://www.facebook.com/share/1TS7a4vHWQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">f</a>
+    <a class="red-social tiktok" href="https://www.tiktok.com/@seordelagunas?_r=1&_t=ZS-9AXEFv8emtW" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">♪</a>
+</div>
+
+<button class="menu-boton" onclick="abrirMenu(this)" aria-label="Abrir menú">
 <span></span>
 <span></span>
 <span></span>
@@ -629,11 +738,8 @@ POLICONSULTORIO SEÑOR DE LAGUNAS
 </nav>
 
 <div class="encabezado">
-
 <h1>CITAS MÉDICAS</h1>
-
 <p>Reserva tu cita médica</p>
-
 </div>
 
 <div class="contenido">
@@ -643,9 +749,7 @@ POLICONSULTORIO SEÑOR DE LAGUNAS
 <div class="presentacion">
 
 <div class="imagen-cita">
-
 <img src="imagen-citas.jpg" alt="Policonsultorio Señor de Lagunas">
-
 </div>
 
 <h2>Agenda tu cita médica</h2>
@@ -659,43 +763,24 @@ que deseas consultar.
 <div class="beneficios">
 
 <div class="beneficio">
-
 <div class="icono">+</div>
-
 <h3>Atención médica</h3>
-
-<p>
-Profesionales preparados para cuidar tu salud.
-</p>
-
+<p>Profesionales preparados para cuidar tu salud.</p>
 </div>
 
 <div class="beneficio">
-
 <div class="icono">✓</div>
-
 <h3>Reserva sencilla</h3>
-
-<p>
-Solicita tu cita de forma rápida.
-</p>
-
+<p>Solicita tu cita de forma rápida.</p>
 </div>
 
 <div class="beneficio">
-
 <div class="icono">♥</div>
-
 <h3>Tu bienestar</h3>
-
-<p>
-Tu salud es nuestra prioridad.
-</p>
-
+<p>Tu salud es nuestra prioridad.</p>
 </div>
 
 </div>
-
 </div>
 
 <div class="formulario">
@@ -712,19 +797,11 @@ una cita médica.
 <div class="form-grid">
 
 <div class="campo">
-
-<label>Nombre completo</label>
-
-<input
-type="text"
-id="nombre"
-placeholder="Escribe tu nombre"
-required>
-
+<label for="nombre">Nombre completo</label>
+<input type="text" id="nombre" placeholder="Escribe tu nombre" required>
 </div>
 
 <div class="campo campo-fecha">
-
 <label>Fecha de nacimiento</label>
 
 <div class="fecha-visual" id="fechaNacimientoVisual" onclick="abrirCalendario('nacimiento')">
@@ -732,53 +809,30 @@ Selecciona una fecha
 </div>
 
 <div class="calendario" id="calendarioNacimiento">
-
 <div class="calendario-cabecera">
-
 <button type="button" onclick="cambiarMes('nacimiento',-1)">‹</button>
-
 <div class="mes-anio" id="mesNacimiento"></div>
-
 <button type="button" onclick="cambiarMes('nacimiento',1)">›</button>
-
 </div>
 
 <div class="dias-semana">
-<div>Lun</div>
-<div>Mar</div>
-<div>Mié</div>
-<div>Jue</div>
-<div>Vie</div>
-<div>Sáb</div>
-<div>Dom</div>
+<div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
 </div>
 
 <div class="dias" id="diasNacimiento"></div>
-
 </div>
 
 <input type="hidden" id="fechaNacimiento" required>
-
 </div>
 
 <div class="campo">
-
-<label>Teléfono</label>
-
-<input
-type="tel"
-id="telefono"
-placeholder="+591"
-required>
-
+<label for="telefono">Teléfono</label>
+<input type="tel" id="telefono" placeholder="+591" required>
 </div>
 
 <div class="campo">
-
-<label>Especialidad</label>
-
+<label for="especialidad">Especialidad</label>
 <select id="especialidad" required>
-
 <option value="">Selecciona una especialidad</option>
 <option>Medicina General</option>
 <option>Pediatría</option>
@@ -786,17 +840,12 @@ required>
 <option>Dermatología</option>
 <option>Traumatología</option>
 <option>Fisioterapia</option>
-
 </select>
-
 </div>
 
 <div class="campo">
-
-<label>Médico</label>
-
+<label for="medico">Médico</label>
 <select id="medico" required>
-
 <option value="">Selecciona un médico</option>
 <option>Dr. Ariel Mendoza</option>
 <option>Dra. Angela Llanque Solíz</option>
@@ -804,13 +853,10 @@ required>
 <option>Jorge Escalera</option>
 <option>Miguel Laca Jiménez</option>
 <option>Dra. Laura Fernández</option>
-
 </select>
-
 </div>
 
 <div class="campo campo-fecha">
-
 <label>Fecha de la cita</label>
 
 <div class="fecha-visual" id="fechaCitaVisual" onclick="abrirCalendario('cita')">
@@ -818,41 +864,25 @@ Selecciona una fecha
 </div>
 
 <div class="calendario" id="calendarioCita">
-
 <div class="calendario-cabecera">
-
 <button type="button" onclick="cambiarMes('cita',-1)">‹</button>
-
 <div class="mes-anio" id="mesCita"></div>
-
 <button type="button" onclick="cambiarMes('cita',1)">›</button>
-
 </div>
 
 <div class="dias-semana">
-<div>Lun</div>
-<div>Mar</div>
-<div>Mié</div>
-<div>Jue</div>
-<div>Vie</div>
-<div>Sáb</div>
-<div>Dom</div>
+<div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
 </div>
 
 <div class="dias" id="diasCita"></div>
-
 </div>
 
 <input type="hidden" id="fechaCita" required>
-
 </div>
 
 <div class="campo">
-
-<label>Hora</label>
-
+<label for="hora">Hora</label>
 <select id="hora" required>
-
 <option value="">Selecciona una hora</option>
 <option>08:00</option>
 <option>09:00</option>
@@ -863,19 +893,12 @@ Selecciona una fecha
 <option>16:00</option>
 <option>17:00</option>
 <option>18:00</option>
-
 </select>
-
 </div>
 
 <div class="campo campo-completo">
-
-<label>Motivo de consulta</label>
-
-<textarea
-id="motivo"
-placeholder="Escribe brevemente el motivo de tu consulta"></textarea>
-
+<label for="motivo">Motivo de consulta</label>
+<textarea id="motivo" placeholder="Escribe brevemente el motivo de tu consulta"></textarea>
 </div>
 
 </div>
@@ -884,20 +907,15 @@ placeholder="Escribe brevemente el motivo de tu consulta"></textarea>
 SOLICITAR CITA
 </button>
 
-<div class="mensaje" id="mensaje"></div>
+<div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
 
 </form>
-
 </div>
-
 </div>
-
 </div>
-
 </section>
 
 <script type="module">
-
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
@@ -905,358 +923,227 @@ import { getFirestore, collection, addDoc, serverTimestamp }
 from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
     apiKey: "AIzaSyB8tas7ZtpJVcHlvRhVwcolAmZRH4SAVe4",
-
     authDomain: "policonsultorio-de-lagunas.firebaseapp.com",
-
     projectId: "policonsultorio-de-lagunas",
-
     storageBucket: "policonsultorio-de-lagunas.firebasestorage.app",
-
     messagingSenderId: "649464859391",
-
     appId: "1:649464859391:web:b3fc9a978fbf1d44809aca",
-
     measurementId: "G-DLCS49ENX8"
-
 };
 
-const app=initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const db=getFirestore(app);
-
-window.abrirMenu=function(btn){
-
-    const menu=document.getElementById("menu");
-
+window.abrirMenu = function(btn){
+    const menu = document.getElementById("menu");
     menu.classList.toggle("abierto");
-
     btn.classList.toggle("activo");
-
 };
 
-const meses=[
-    "enero",
-    "febrero",
-    "marzo",
-    "abril",
-    "mayo",
-    "junio",
-    "julio",
-    "agosto",
-    "septiembre",
-    "octubre",
-    "noviembre",
-    "diciembre"
+const meses = [
+    "enero","febrero","marzo","abril","mayo","junio",
+    "julio","agosto","septiembre","octubre","noviembre","diciembre"
 ];
 
-let calendarioNacimiento=new Date();
+let calendarioNacimiento = new Date();
+let calendarioCita = new Date();
 
-let calendarioCita=new Date();
-
-window.abrirCalendario=function(tipo){
-
-    const calendario=document.getElementById(
-        tipo==="nacimiento"
-        ? "calendarioNacimiento"
-        : "calendarioCita"
+window.abrirCalendario = function(tipo){
+    const calendario = document.getElementById(
+        tipo === "nacimiento" ? "calendarioNacimiento" : "calendarioCita"
     );
 
-    const otro=document.getElementById(
-        tipo==="nacimiento"
-        ? "calendarioCita"
-        : "calendarioNacimiento"
+    const otro = document.getElementById(
+        tipo === "nacimiento" ? "calendarioCita" : "calendarioNacimiento"
     );
 
     otro.classList.remove("abierto");
-
     calendario.classList.toggle("abierto");
 
     if(calendario.classList.contains("abierto")){
-
         mostrarCalendario(tipo);
-
     }
-
 };
 
-window.cambiarMes=function(tipo,cambio){
-
-    if(tipo==="nacimiento"){
-
-        calendarioNacimiento.setMonth(
-            calendarioNacimiento.getMonth()+cambio
-        );
-
+window.cambiarMes = function(tipo,cambio){
+    if(tipo === "nacimiento"){
+        calendarioNacimiento.setMonth(calendarioNacimiento.getMonth()+cambio);
     }else{
-
-        calendarioCita.setMonth(
-            calendarioCita.getMonth()+cambio
-        );
-
+        calendarioCita.setMonth(calendarioCita.getMonth()+cambio);
     }
 
     mostrarCalendario(tipo);
-
 };
 
 function mostrarCalendario(tipo){
+    const fecha = tipo === "nacimiento" ? calendarioNacimiento : calendarioCita;
+    const mes = fecha.getMonth();
+    const anio = fecha.getFullYear();
 
-    const fecha=
-        tipo==="nacimiento"
-        ? calendarioNacimiento
-        : calendarioCita;
-
-    const mes=fecha.getMonth();
-
-    const anio=fecha.getFullYear();
-
-    const nombreMes=document.getElementById(
-        tipo==="nacimiento"
-        ? "mesNacimiento"
-        : "mesCita"
+    const nombreMes = document.getElementById(
+        tipo === "nacimiento" ? "mesNacimiento" : "mesCita"
     );
 
-    const contenedor=document.getElementById(
-        tipo==="nacimiento"
-        ? "diasNacimiento"
-        : "diasCita"
+    const contenedor = document.getElementById(
+        tipo === "nacimiento" ? "diasNacimiento" : "diasCita"
     );
 
-    nombreMes.textContent=meses[mes]+" "+anio;
+    nombreMes.textContent = meses[mes]+" "+anio;
+    contenedor.innerHTML = "";
 
-    contenedor.innerHTML="";
-
-    const primerDia=new Date(anio,mes,1).getDay();
-
-    const inicio=primerDia===0 ? 6 : primerDia-1;
-
-    const cantidadDias=new Date(anio,mes+1,0).getDate();
-
-    const hoy=new Date();
+    const primerDia = new Date(anio,mes,1).getDay();
+    const inicio = primerDia === 0 ? 6 : primerDia-1;
+    const cantidadDias = new Date(anio,mes+1,0).getDate();
+    const hoy = new Date();
 
     for(let i=0;i<inicio;i++){
-
-        const vacio=document.createElement("button");
-
-        vacio.type="button";
-
-        vacio.className="dia vacio";
-
+        const vacio = document.createElement("button");
+        vacio.type = "button";
+        vacio.className = "dia vacio";
+        vacio.disabled = true;
+        vacio.setAttribute("aria-hidden","true");
         contenedor.appendChild(vacio);
-
     }
 
     for(let dia=1;dia<=cantidadDias;dia++){
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.className = "dia";
+        boton.textContent = dia;
 
-        const boton=document.createElement("button");
-
-        boton.type="button";
-
-        boton.className="dia";
-
-        boton.textContent=dia;
-
-        const fechaDia=new Date(anio,mes,dia);
+        const fechaDia = new Date(anio,mes,dia);
 
         if(
-            dia===hoy.getDate() &&
-            mes===hoy.getMonth() &&
-            anio===hoy.getFullYear()
+            dia === hoy.getDate() &&
+            mes === hoy.getMonth() &&
+            anio === hoy.getFullYear()
         ){
-
             boton.classList.add("hoy");
-
         }
 
-        if(tipo==="cita"){
-
-            const hoySinHora=new Date(
-                hoy.getFullYear(),
-                hoy.getMonth(),
-                hoy.getDate()
+        if(tipo === "cita"){
+            const hoySinHora = new Date(
+                hoy.getFullYear(),hoy.getMonth(),hoy.getDate()
             );
 
-            if(fechaDia<hoySinHora){
-
+            if(fechaDia < hoySinHora){
                 boton.classList.add("deshabilitado");
-
-                boton.disabled=true;
-
+                boton.disabled = true;
             }
-
         }
 
-        const valor=
-            anio+"-"+
-            String(mes+1).padStart(2,"0")+"-"+
-            String(dia).padStart(2,"0");
+        const valor = anio+"-"+String(mes+1).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
 
-        const campo=
-            tipo==="nacimiento"
-            ? document.getElementById("fechaNacimiento").value
-            : document.getElementById("fechaCita").value;
+        const campo = document.getElementById(
+            tipo === "nacimiento" ? "fechaNacimiento" : "fechaCita"
+        );
 
-        if(campo===valor){
-
+        if(campo.value === valor){
             boton.classList.add("seleccionado");
-
         }
 
-        boton.onclick=function(){
-
+        boton.onclick = function(){
             seleccionarFecha(tipo,fechaDia,valor);
-
         };
 
         contenedor.appendChild(boton);
-
     }
-
 }
 
 function seleccionarFecha(tipo,fecha,valor){
-
-    const texto=
+    const texto =
         String(fecha.getDate()).padStart(2,"0")+
-        " de "+
-        meses[fecha.getMonth()]+
-        " de "+
-        fecha.getFullYear();
+        " de "+meses[fecha.getMonth()]+
+        " de "+fecha.getFullYear();
 
-    if(tipo==="nacimiento"){
-
-        document.getElementById("fechaNacimiento").value=valor;
-
-        document.getElementById("fechaNacimientoVisual").textContent=texto;
-
+    if(tipo === "nacimiento"){
+        document.getElementById("fechaNacimiento").value = valor;
+        document.getElementById("fechaNacimientoVisual").textContent = texto;
         document.getElementById("calendarioNacimiento").classList.remove("abierto");
-
     }else{
-
-        document.getElementById("fechaCita").value=valor;
-
-        document.getElementById("fechaCitaVisual").textContent=texto;
-
+        document.getElementById("fechaCita").value = valor;
+        document.getElementById("fechaCitaVisual").textContent = texto;
         document.getElementById("calendarioCita").classList.remove("abierto");
-
     }
-
 }
 
 document.addEventListener("click",function(event){
-
     if(!event.target.closest(".campo-fecha")){
-
         document.getElementById("calendarioNacimiento").classList.remove("abierto");
-
         document.getElementById("calendarioCita").classList.remove("abierto");
-
     }
-
 });
 
-window.reservarCita=async function(event){
-
+window.reservarCita = async function(event){
     event.preventDefault();
 
-    const formulario=event.target;
+    const formulario = event.target;
+    const mensaje = document.getElementById("mensaje");
 
-    const mensaje=document.getElementById("mensaje");
-
-    const nombre=document.getElementById("nombre").value.trim();
-
-    const fechaNacimiento=document.getElementById("fechaNacimiento").value;
-
-    const telefono=document.getElementById("telefono").value.trim();
-
-    const especialidad=document.getElementById("especialidad").value;
-
-    const medico=document.getElementById("medico").value;
-
-    const fechaCita=document.getElementById("fechaCita").value;
-
-    const hora=document.getElementById("hora").value;
-
-    const motivo=document.getElementById("motivo").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
+    const fechaNacimiento = document.getElementById("fechaNacimiento").value;
+    const telefono = document.getElementById("telefono").value.trim();
+    const especialidad = document.getElementById("especialidad").value;
+    const medico = document.getElementById("medico").value;
+    const fechaCita = document.getElementById("fechaCita").value;
+    const hora = document.getElementById("hora").value;
+    const motivo = document.getElementById("motivo").value.trim();
 
     if(!fechaNacimiento){
-
         alert("Selecciona la fecha de nacimiento.");
-
         return;
-
     }
 
     if(!fechaCita){
-
         alert("Selecciona la fecha de la cita.");
-
         return;
-
     }
+
+    if(fechaCita < new Date().toLocaleDateString("en-CA")){
+        alert("Selecciona una fecha de cita válida.");
+        return;
+    }
+
+    const boton = formulario.querySelector(".boton-reservar");
+    boton.disabled = true;
+    boton.textContent = "REGISTRANDO...";
 
     try{
-
         await addDoc(collection(db,"citas"),{
-
             nombre:nombre,
-
             fechaNacimiento:fechaNacimiento,
-
             telefono:telefono,
-
             especialidad:especialidad,
-
             medico:medico,
-
             fechaCita:fechaCita,
-
             hora:hora,
-
             motivo:motivo,
-
             estado:"pendiente",
-
             fechaRegistro:serverTimestamp()
-
         });
 
-        mensaje.textContent=
-            "Tu solicitud de cita ha sido registrada correctamente.";
-
-        mensaje.style.display="block";
-
+        mensaje.textContent = "Tu solicitud de cita ha sido registrada correctamente.";
+        mensaje.style.display = "block";
         formulario.reset();
 
-        document.getElementById("fechaNacimiento").value="";
-
-        document.getElementById("fechaCita").value="";
-
-        document.getElementById("fechaNacimientoVisual").textContent=
-            "Selecciona una fecha";
-
-        document.getElementById("fechaCitaVisual").textContent=
-            "Selecciona una fecha";
+        document.getElementById("fechaNacimiento").value = "";
+        document.getElementById("fechaCita").value = "";
+        document.getElementById("fechaNacimientoVisual").textContent = "Selecciona una fecha";
+        document.getElementById("fechaCitaVisual").textContent = "Selecciona una fecha";
 
     }catch(error){
-
         console.error(error);
-
-        mensaje.textContent=
-            "No se pudo registrar la cita. Verifica la conexión con la base de datos.";
-
-        mensaje.style.display="block";
-
+        mensaje.textContent = "No se pudo registrar la cita. Verifica la conexión con la base de datos.";
+        mensaje.style.display = "block";
+    }finally{
+        boton.disabled = false;
+        boton.textContent = "SOLICITAR CITA";
     }
-
 };
 
 mostrarCalendario("nacimiento");
-
 mostrarCalendario("cita");
-
 </script>
 
 </body>
