@@ -110,6 +110,11 @@ button:disabled {
     color: #a32020;
 }
 
+.eliminar {
+    background: #f4d8ff;
+    color: #76269a;
+}
+
 .mensaje {
     margin-top: 15px;
     font-size: 14px;
@@ -155,6 +160,7 @@ th {
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
+    min-width: 120px;
 }
 
 .estado {
@@ -235,6 +241,7 @@ footer {
                 <h2>Solicitudes de citas</h2>
                 <p id="resumen">Cargando solicitudes...</p>
             </div>
+
             <button id="botonSalir" class="salir" type="button">
                 Cerrar sesión
             </button>
@@ -281,7 +288,7 @@ import {
     collection,
     onSnapshot,
     doc,
-    updateDoc,
+    writeBatch,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
@@ -305,6 +312,7 @@ const formLogin = document.getElementById("formLogin");
 const correo = document.getElementById("correo");
 const contrasena = document.getElementById("contrasena");
 const botonLogin = document.getElementById("botonLogin");
+const botonSalir = document.getElementById("botonSalir");
 const mensajeLogin = document.getElementById("mensajeLogin");
 const mensajePanel = document.getElementById("mensajePanel");
 const listaCitas = document.getElementById("listaCitas");
@@ -333,17 +341,22 @@ function traducirError(error) {
         "auth/too-many-requests":
             "Demasiados intentos. Espera un momento e inténtalo otra vez.",
         "auth/network-request-failed":
-            "No hay conexión. Comprueba tu internet."
+            "No hay conexión. Comprueba tu internet.",
+        "permission-denied":
+            "Acceso denegado. Comprueba las reglas y los permisos de Firebase.",
+        "not-found":
+            "No se encontró uno de los documentos necesarios."
     };
 
     return errores[error.code] ||
-        "No se pudo completar la operación. Revisa la configuración de Firebase.";
+        "No se pudo completar la operación. Revisa Firebase y la conexión.";
 }
 
 formLogin.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (procesando) return;
+
     procesando = true;
     botonLogin.disabled = true;
     mostrarMensaje(mensajeLogin, "Verificando acceso...");
@@ -354,6 +367,7 @@ formLogin.addEventListener("submit", async (event) => {
             correo.value.trim(),
             contrasena.value
         );
+
         contrasena.value = "";
     } catch (error) {
         mostrarMensaje(mensajeLogin, traducirError(error));
@@ -377,6 +391,7 @@ onAuthStateChanged(auth, (user) => {
         login.classList.remove("oculto");
         panelCitas.classList.add("oculto");
         mostrarMensaje(mensajeLogin, "");
+        resumen.textContent = "Cargando solicitudes...";
         return;
     }
 
@@ -447,22 +462,45 @@ onAuthStateChanged(auth, (user) => {
                     const botonConfirmar = document.createElement("button");
                     botonConfirmar.className = "confirmar";
                     botonConfirmar.textContent = "Confirmar";
+
                     botonConfirmar.addEventListener("click", () => {
-                        cambiarEstado(documento.id, "confirmada", botonConfirmar);
+                        cambiarEstado(
+                            documento.id,
+                            cita.codigoSeguimiento,
+                            "confirmada",
+                            botonConfirmar
+                        );
                     });
 
-                    const botonCancelar = document.createElement("button");
-                    botonCancelar.className = "cancelar";
-                    botonCancelar.textContent = "Cancelar";
-                    botonCancelar.addEventListener("click", () => {
-                        cambiarEstado(documento.id, "cancelada", botonCancelar);
+                    const botonRechazar = document.createElement("button");
+                    botonRechazar.className = "cancelar";
+                    botonRechazar.textContent = "Rechazar";
+
+                    botonRechazar.addEventListener("click", () => {
+                        cambiarEstado(
+                            documento.id,
+                            cita.codigoSeguimiento,
+                            "cancelada",
+                            botonRechazar
+                        );
                     });
 
-                    acciones.append(botonConfirmar, botonCancelar);
-                } else {
-                    acciones.textContent = "Sin acciones";
+                    acciones.append(botonConfirmar, botonRechazar);
                 }
 
+                const botonEliminar = document.createElement("button");
+                botonEliminar.className = "eliminar";
+                botonEliminar.textContent = "Eliminar";
+
+                botonEliminar.addEventListener("click", () => {
+                    eliminarCita(
+                        documento.id,
+                        cita.codigoSeguimiento,
+                        botonEliminar
+                    );
+                });
+
+                acciones.append(botonEliminar);
                 celdaAcciones.append(acciones);
                 fila.append(celdaAcciones);
                 listaCitas.append(fila);
@@ -475,54 +513,156 @@ onAuthStateChanged(auth, (user) => {
         (error) => {
             listaCitas.replaceChildren();
             resumen.textContent = "No se pudieron cargar las citas.";
+
             mostrarMensaje(
                 mensajePanel,
                 error.code === "permission-denied"
-                    ? "Acceso denegado. Comprueba que el UID de tu usuario coincida con el documento de administradores y que las reglas estén publicadas."
+                    ? "Acceso denegado. Comprueba que tu usuario tenga un documento en administradores con activo: true y que las reglas estén publicadas."
                     : "Error al consultar Firestore. Revisa la conexión y la configuración."
             );
         }
     );
 });
 
-async function cambiarEstado(id, estado, boton) {
+function validarCodigo(codigo) {
+    return typeof codigo === "string" &&
+        /^[A-F0-9]{32}$/.test(codigo);
+}
+
+async function cambiarEstado(id, codigoSeguimiento, estado, boton) {
     if (!usuarioActual || procesando) return;
 
-    if (!confirm("¿Quieres cambiar el estado de esta cita a " + estado + "?")) {
+    if (!validarCodigo(codigoSeguimiento)) {
+        mostrarMensaje(
+            mensajePanel,
+            "Esta cita no tiene un código de seguimiento válido. No se realizó ningún cambio."
+        );
+        return;
+    }
+
+    if (!confirm(
+        "¿Quieres cambiar el estado de esta cita a " + estado + "?"
+    )) {
         return;
     }
 
     procesando = true;
     boton.disabled = true;
-    mostrarMensaje(mensajePanel, "Guardando cambio...");
+    botonSalir.disabled = true;
+    mostrarMensaje(mensajePanel, "Actualizando cita y seguimiento...");
 
     try {
-        await updateDoc(doc(db, "citas", id), {
+        const lote = writeBatch(db);
+
+        const citaRef = doc(db, "citas", id);
+        const seguimientoRef = doc(
+            db,
+            "seguimientoCitas",
+            codigoSeguimiento
+        );
+
+        const cambios = {
             estado: estado,
             fechaActualizacion: serverTimestamp()
-        });
+        };
 
-        mostrarMensaje(mensajePanel, "Estado actualizado correctamente.");
+        lote.update(citaRef, cambios);
+        lote.update(seguimientoRef, cambios);
+
+        await lote.commit();
+
+        mostrarMensaje(
+            mensajePanel,
+            "Cita actualizada. El seguimiento también muestra el nuevo estado."
+        );
     } catch (error) {
+        console.error("Error al cambiar el estado:", error);
+
         mostrarMensaje(
             mensajePanel,
             error.code === "permission-denied"
-                ? "No tienes permiso para cambiar esta cita. Comprueba la sesión y las reglas."
-                : "No se pudo actualizar el estado. Inténtalo nuevamente."
+                ? "Firebase denegó el cambio. Comprueba las reglas publicadas y los permisos del administrador."
+                : error.code === "not-found"
+                    ? "No se encontró la cita o su seguimiento. No se guardaron los cambios."
+                    : traducirError(error)
         );
     } finally {
         procesando = false;
         boton.disabled = false;
+        botonSalir.disabled = false;
     }
 }
 
-document.getElementById("botonSalir").addEventListener("click", async () => {
+async function eliminarCita(id, codigoSeguimiento, boton) {
+    if (!usuarioActual || procesando) return;
+
+    if (codigoSeguimiento && !validarCodigo(codigoSeguimiento)) {
+        mostrarMensaje(
+            mensajePanel,
+            "El código de seguimiento no es válido. No se eliminó nada."
+        );
+        return;
+    }
+
+    const pregunta = codigoSeguimiento
+        ? "¿Eliminar esta cita y su código de seguimiento? Esta acción no se puede deshacer."
+        : "Esta cita no tiene código de seguimiento. ¿Quieres eliminar solamente la cita?";
+
+    if (!confirm(pregunta)) return;
+
+    procesando = true;
+    boton.disabled = true;
+    botonSalir.disabled = true;
+    mostrarMensaje(mensajePanel, "Eliminando cita...");
+
+    try {
+        const lote = writeBatch(db);
+
+        lote.delete(doc(db, "citas", id));
+
+        if (codigoSeguimiento) {
+            lote.delete(
+                doc(db, "seguimientoCitas", codigoSeguimiento)
+            );
+        }
+
+        await lote.commit();
+
+        mostrarMensaje(
+            mensajePanel,
+            "La cita se eliminó correctamente."
+        );
+    } catch (error) {
+        console.error("Error al eliminar la cita:", error);
+
+        mostrarMensaje(
+            mensajePanel,
+            error.code === "permission-denied"
+                ? "Firebase denegó la eliminación. Revisa las reglas de seguridad."
+                : error.code === "not-found"
+                    ? "No se encontró uno de los documentos. No se completó la eliminación."
+                    : traducirError(error)
+        );
+    } finally {
+        procesando = false;
+        boton.disabled = false;
+        botonSalir.disabled = false;
+    }
+}
+
+botonSalir.addEventListener("click", async () => {
+    if (procesando) return;
+
     if (detenerCitas) {
         detenerCitas();
         detenerCitas = null;
     }
 
-    await signOut(auth);
+    try {
+        await signOut(auth);
+    } catch (error) {
+        mostrarMensaje(mensajePanel, traducirError(error));
+    }
 });
 </script>
 

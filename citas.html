@@ -6,735 +6,107 @@
 <title>Citas Médicas | Policonsultorio Señor de Lagunas</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#bfe8f7;
-}
-
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(20px);}
-    to{opacity:1;transform:translateY(0);}
-}
-
-.pagina{
-    min-height:100vh;
-    padding:35px 45px 70px;
-    position:relative;
-    overflow:hidden;
-    background:
-        radial-gradient(circle at 8% 10%,rgba(255,255,255,.9),transparent 25%),
-        radial-gradient(circle at 90% 90%,rgba(0,126,190,.2),transparent 35%),
-        repeating-linear-gradient(
-            135deg,
-            transparent 0px,
-            transparent 55px,
-            rgba(7,85,160,.035) 56px,
-            rgba(7,85,160,.035) 58px
-        ),
-        linear-gradient(135deg,#e5faff 0%,#b8e3f2 45%,#d5f2fb 100%);
-}
-
-/* Redes sociales */
-.redes-flotantes{
-    position:absolute;
-    top:18px;
-    left:20px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    z-index:101;
-}
-
-.red-social{
-    width:42px;
-    height:42px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:50%;
-    color:white;
-    text-decoration:none;
-    font-family:Arial,sans-serif;
-    font-size:23px;
-    font-weight:bold;
-    border:2px solid white;
-    box-shadow:0 4px 12px rgba(0,50,100,.2);
-    transition:transform .3s ease;
-}
-
-.red-social:hover{
-    transform:scale(1.08);
-}
-
-.whatsapp{
-    background:#25D366;
-}
-
-.facebook{
-    background:#1877F2;
-    font-size:27px;
-}
-
-.tiktok{
-    background:#111;
-    font-size:21px;
-}
-
-.menu-boton{
-    position:absolute;
-    top:25px;
-    right:30px;
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    background:rgba(7,85,160,.9);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:2px solid rgba(255,255,255,.8);
-    box-shadow:0 7px 20px rgba(0,55,110,.35);
-    cursor:pointer;
-    z-index:100;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:5px;
-    transition:all .3s cubic-bezier(.175,.885,.32,1.275);
-}
-
-.menu-boton:hover{
-    transform:scale(1.08);
-    background:#1591c8;
-    border-color:white;
-}
-
-.menu-boton span{
-    width:25px;
-    height:3px;
-    background:white;
-    border-radius:5px;
-    transition:all .3s ease;
-}
-
-.menu-boton.activo span:nth-child(1){
-    transform:translateY(8px) rotate(45deg);
-}
-
-.menu-boton.activo span:nth-child(2){
-    opacity:0;
-}
-
-.menu-boton.activo span:nth-child(3){
-    transform:translateY(-8px) rotate(-45deg);
-}
-
-.menu-desplegable{
-    position:absolute;
-    top:90px;
-    right:30px;
-    width:220px;
-    padding:18px;
-    background:rgba(255,255,255,.92);
-    backdrop-filter:blur(15px);
-    -webkit-backdrop-filter:blur(15px);
-    border:2px solid rgba(7,85,160,.3);
-    border-radius:20px;
-    box-shadow:0 15px 35px rgba(0,50,100,.3);
-    opacity:0;
-    visibility:hidden;
-    transform:translateY(-15px) scale(.95);
-    transition:all .4s cubic-bezier(.175,.885,.32,1.275);
-    z-index:100;
-}
-
-.menu-desplegable.abierto{
-    opacity:1;
-    visibility:visible;
-    transform:translateY(0) scale(1);
-}
-
-.logo-menu{
-    width:68px;
-    height:68px;
-    margin:3px auto 10px;
-    border-radius:50%;
-    object-fit:cover;
-    border:2px solid #0755A0;
-    display:block;
-    box-shadow:0 4px 10px rgba(0,0,0,.15);
-}
-
-.nombre-clinica{
-    text-align:center;
-    color:#0755A0;
-    font-size:12px;
-    font-weight:bold;
-    margin-bottom:12px;
-    letter-spacing:.5px;
-}
-
-.menu-desplegable a{
-    display:block;
-    text-decoration:none;
-    text-align:center;
-    color:white;
-    background:linear-gradient(135deg,#0755A0,#0b78bd);
-    padding:11px;
-    margin:8px 0;
-    border-radius:12px;
-    font-size:12px;
-    font-weight:bold;
-    transition:all .3s ease;
-    box-shadow:0 4px 10px rgba(0,50,100,.15);
-}
-
-.menu-desplegable a:hover{
-    transform:translateX(5px);
-    background:#1591c8;
-    box-shadow:0 6px 15px rgba(21,145,200,.4);
-}
-
-.encabezado{
-    position:relative;
-    z-index:5;
-    max-width:1200px;
-    margin:55px auto 35px;
-    padding:20px 28px;
-    border-left:8px solid #0755A0;
-    background:rgba(255,255,255,.6);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-radius:0 20px 20px 0;
-    border-top:1px solid rgba(255,255,255,.7);
-    border-right:1px solid rgba(255,255,255,.7);
-    border-bottom:1px solid rgba(255,255,255,.7);
-    box-shadow:0 8px 25px rgba(0,70,120,.1);
-    animation:fadeIn .8s ease-out forwards;
-}
-
-.encabezado h1{
-    color:#06498d;
-    font-size:45px;
-    letter-spacing:1.5px;
-    text-shadow:1px 1px 2px rgba(255,255,255,.8);
-}
-
-.encabezado p{
-    color:#305b6f;
-    font-size:16px;
-    font-weight:bold;
-    margin-top:7px;
-}
-
-.contenido{
-    position:relative;
-    z-index:5;
-    max-width:1200px;
-    margin:auto;
-    animation:fadeIn 1s ease-out forwards;
-}
-
-.reserva{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
-    align-items:stretch;
-}
-
-.presentacion{
-    background:rgba(255,255,255,.78);
-    border:3px solid rgba(7,85,160,.3);
-    border-radius:24px;
-    padding:25px;
-    box-shadow:0 12px 30px rgba(0,70,120,.18);
-}
-
-.imagen-cita{
-    width:100%;
-    height:390px;
-    background:white;
-    border:2px solid rgba(7,85,160,.25);
-    border-radius:20px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 8px 20px rgba(0,70,120,.12);
-}
-
-.imagen-cita img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.presentacion h2{
-    color:#06498d;
-    text-align:center;
-    font-size:27px;
-    margin:25px 0 10px;
-}
-
-.presentacion > p{
-    color:#4a6d82;
-    text-align:center;
-    font-size:15px;
-    line-height:1.7;
-}
-
-.beneficios{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-top:25px;
-}
-
-.beneficio{
-    text-align:center;
-    padding:15px 8px;
-    border-right:1px solid rgba(7,85,160,.2);
-}
-
-.beneficio:last-child{
-    border-right:none;
-}
-
-.beneficio .icono{
-    width:45px;
-    height:45px;
-    margin:0 auto 10px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#0755A0,#0b78bd);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    font-weight:bold;
-}
-
-.beneficio h3{
-    color:#06498d;
-    font-size:14px;
-    margin-bottom:6px;
-}
-
-.beneficio p{
-    color:#4a6d82;
-    font-size:12px;
-    line-height:1.4;
-}
-
-.formulario{
-    background:rgba(255,255,255,.9);
-    border:3px solid rgba(7,85,160,.35);
-    border-radius:24px;
-    padding:30px;
-    box-shadow:0 12px 30px rgba(0,70,120,.2);
-    position:relative;
-    overflow:visible;
-}
-
-.formulario::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:6px;
-    background:linear-gradient(90deg,#0755A0,#0b78bd,#159bd0);
-    border-radius:20px 20px 0 0;
-}
-
-.formulario h2{
-    color:#06498d;
-    font-size:31px;
-    margin-bottom:8px;
-}
-
-.subtitulo-formulario{
-    color:#4a6d82;
-    font-size:14px;
-    line-height:1.5;
-    margin-bottom:25px;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
-
-.campo{
-    display:flex;
-    flex-direction:column;
-    position:relative;
-}
-
-.campo-completo{
-    grid-column:1 / -1;
-}
-
-.campo label{
-    color:#06498d;
-    font-size:13px;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-
-.campo input,
-.campo select,
-.campo textarea{
-    width:100%;
-    border:1px solid rgba(7,85,160,.25);
-    border-radius:12px;
-    padding:12px 13px;
-    background:#f9fdff;
-    color:#31566b;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:13px;
-    outline:none;
-    transition:all .3s ease;
-}
-
-.campo input:focus,
-.campo select:focus,
-.campo textarea:focus{
-    border-color:#0755A0;
-    box-shadow:0 0 0 3px rgba(7,85,160,.1);
-    background:white;
-}
-
-.campo textarea{
-    height:90px;
-    resize:none;
-}
-
-.campo-fecha{
-    position:relative;
-}
-
-.fecha-visual{
-    width:100%;
-    min-height:43px;
-    border:1px solid rgba(7,85,160,.25);
-    border-radius:12px;
-    padding:12px 13px;
-    background:#f9fdff;
-    color:#31566b;
-    font-size:13px;
-    cursor:pointer;
-    transition:all .3s ease;
-}
-
-.fecha-visual:hover,
-.fecha-visual.activa{
-    border-color:#0755A0;
-    box-shadow:0 0 0 3px rgba(7,85,160,.1);
-    background:white;
-}
-
-.calendario{
-    position:absolute;
-    top:76px;
-    left:0;
-    width:310px;
-    background:white;
-    border:2px solid rgba(7,85,160,.3);
-    border-radius:18px;
-    padding:15px;
-    box-shadow:0 15px 35px rgba(0,50,100,.3);
-    z-index:200;
-    display:none;
-}
-
-.calendario.abierto{
-    display:block;
-    animation:fadeIn .2s ease-out;
-}
-
-.calendario-cabecera{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:12px;
-}
-
-.calendario-cabecera button{
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:9px;
-    background:#0755A0;
-    color:white;
-    font-size:19px;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.calendario-cabecera button:hover{
-    background:#0b78bd;
-    transform:scale(1.05);
-}
-
-.mes-anio{
-    color:#06498d;
-    font-size:15px;
-    font-weight:bold;
-    text-transform:capitalize;
-}
-
-.dias-semana{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:4px;
-    margin-bottom:5px;
-}
-
-.dias-semana div{
-    text-align:center;
-    color:#0755A0;
-    font-size:11px;
-    font-weight:bold;
-    padding:5px 0;
-}
-
-.dias{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:4px;
-}
-
-.dia{
-    height:34px;
-    border:none;
-    border-radius:8px;
-    background:#f1f9fd;
-    color:#31566b;
-    cursor:pointer;
-    font-size:12px;
-    transition:.2s;
-}
-
-.dia:hover{
-    background:#bfe8f7;
-}
-
-.dia.hoy{
-    border:2px solid #0755A0;
-    font-weight:bold;
-}
-
-.dia.seleccionado{
-    background:#0755A0;
-    color:white;
-}
-
-.dia.deshabilitado{
-    color:#b8c4ca;
-    background:#f5f5f5;
-    cursor:not-allowed;
-}
-
-.dia.vacio{
-    background:transparent;
-    cursor:default;
-}
-
-.boton-reservar{
-    width:100%;
-    margin-top:23px;
-    padding:15px;
-    border:none;
-    border-radius:15px;
-    color:white;
-    background:linear-gradient(135deg,#06498d,#0b78bd,#159bd0);
-    font-size:14px;
-    font-weight:bold;
-    letter-spacing:.5px;
-    cursor:pointer;
-    box-shadow:0 7px 18px rgba(0,65,115,.25);
-    transition:all .3s ease;
-}
-
-.boton-reservar:hover{
-    transform:translateY(-3px);
-    box-shadow:0 11px 25px rgba(0,65,115,.35);
-    background:linear-gradient(135deg,#053d78,#0755A0,#21a8d8);
-}
-
-.mensaje{
-    display:none;
-    margin-top:18px;
-    padding:14px;
-    border-radius:12px;
-    background:rgba(7,85,160,.1);
-    border:1px solid rgba(7,85,160,.25);
-    color:#06498d;
-    text-align:center;
-    font-size:13px;
-    font-weight:bold;
-}
-
-@media(max-width:900px){
-
-    .pagina{
-        padding:25px 18px 50px;
-    }
-
-    .encabezado{
-        margin-top:70px;
-    }
-
-    .encabezado h1{
-        font-size:35px;
-    }
-
-    .reserva{
-        grid-template-columns:1fr;
-    }
-
-    .imagen-cita{
-        height:350px;
-    }
-}
-
-@media(max-width:600px){
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .campo-completo{
-        grid-column:auto;
-    }
-
-    .beneficios{
-        grid-template-columns:1fr;
-    }
-
-    .beneficio{
-        border-right:none;
-        border-bottom:1px solid rgba(7,85,160,.2);
-    }
-
-    .beneficio:last-child{
-        border-bottom:none;
-    }
-
-    .formulario{
-        padding:22px;
-    }
-
-    .imagen-cita{
-        height:280px;
-    }
-
-    .calendario{
-        width:100%;
-        max-width:310px;
-    }
-
-    .redes-flotantes{
-        top:20px;
-        left:18px;
-        gap:7px;
-    }
-
-    .red-social{
-        width:36px;
-        height:36px;
-        font-size:20px;
-    }
-
-    .facebook{
-        font-size:24px;
-    }
-
-    .tiktok{
-        font-size:18px;
-    }
-}
-
-@media(max-width:400px){
-
-    .pagina{
-        padding-left:12px;
-        padding-right:12px;
-    }
-
-    .redes-flotantes{
-        gap:5px;
-        left:12px;
-    }
-
-    .red-social{
-        width:32px;
-        height:32px;
-        font-size:18px;
-    }
-
-    .facebook{
-        font-size:22px;
-    }
-
-    .tiktok{
-        font-size:17px;
-    }
-
-    .menu-boton{
-        width:45px;
-        height:45px;
-        right:12px;
-    }
-
-    .encabezado h1{
-        font-size:29px;
-    }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#bfe8f7}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pagina{min-height:100vh;padding:35px 45px 70px;position:relative;overflow:hidden;background:radial-gradient(circle at 8% 10%,rgba(255,255,255,.9),transparent 25%),radial-gradient(circle at 90% 90%,rgba(0,126,190,.2),transparent 35%),repeating-linear-gradient(135deg,transparent 0,transparent 55px,rgba(7,85,160,.035) 56px,rgba(7,85,160,.035) 58px),linear-gradient(135deg,#e5faff,#b8e3f2 45%,#d5f2fb)}
+.redes-flotantes{position:absolute;top:18px;left:20px;display:flex;gap:10px;align-items:center;z-index:101}
+.red-social{width:42px;height:42px;display:flex;justify-content:center;align-items:center;border-radius:50%;color:white;text-decoration:none;font-size:23px;font-weight:bold;border:2px solid white;box-shadow:0 4px 12px #00326433;transition:transform .3s}
+.red-social:hover{transform:scale(1.08)}
+.whatsapp{background:#25D366}.facebook{background:#1877F2;font-size:27px}.tiktok{background:#111;font-size:21px}
+.menu-boton{position:absolute;top:25px;right:30px;width:55px;height:55px;border-radius:50%;background:#0755a0e6;border:2px solid #ffffffcc;box-shadow:0 7px 20px #00376e59;cursor:pointer;z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.menu-boton span{width:25px;height:3px;background:white;border-radius:5px;transition:all .3s}
+.menu-boton.activo span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.menu-boton.activo span:nth-child(2){opacity:0}
+.menu-boton.activo span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.menu-desplegable{position:absolute;top:90px;right:30px;width:220px;padding:18px;background:#fffffff0;border:2px solid #0755a04d;border-radius:20px;box-shadow:0 15px 35px #0032644d;opacity:0;visibility:hidden;transform:translateY(-15px);transition:all .3s;z-index:100}
+.menu-desplegable.abierto{opacity:1;visibility:visible;transform:translateY(0)}
+.logo-menu{width:68px;height:68px;margin:3px auto 10px;border-radius:50%;object-fit:cover;border:2px solid #0755a0;display:block}
+.nombre-clinica{text-align:center;color:#0755a0;font-size:12px;font-weight:bold;margin-bottom:12px;letter-spacing:.5px}
+.menu-desplegable a{display:block;text-decoration:none;text-align:center;color:white;background:linear-gradient(135deg,#0755a0,#0b78bd);padding:11px;margin:8px 0;border-radius:12px;font-size:12px;font-weight:bold}
+.encabezado{position:relative;z-index:5;max-width:1200px;margin:55px auto 35px;padding:20px 28px;border-left:8px solid #0755a0;background:#ffffff99;border-radius:0 20px 20px 0;box-shadow:0 8px 25px #0046781a;animation:fadeIn .8s forwards}
+.encabezado h1{color:#06498d;font-size:45px;letter-spacing:1.5px}
+.encabezado p{color:#305b6f;font-size:16px;font-weight:bold;margin-top:7px}
+.contenido{position:relative;z-index:5;max-width:1200px;margin:auto;animation:fadeIn 1s forwards}
+.reserva{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+.presentacion{background:#ffffffc7;border:3px solid #0755a04d;border-radius:24px;padding:25px;box-shadow:0 12px 30px #0046782e}
+.imagen-cita{width:100%;height:390px;background:white;border:2px solid #0755a040;border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.imagen-cita img{width:100%;height:100%;object-fit:cover;display:block}
+.presentacion h2{color:#06498d;text-align:center;font-size:27px;margin:25px 0 10px}
+.presentacion>p{color:#4a6d82;text-align:center;font-size:15px;line-height:1.7}
+.beneficios{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:25px}
+.beneficio{text-align:center;padding:15px 8px;border-right:1px solid #0755a033}
+.beneficio:last-child{border-right:none}
+.beneficio .icono{width:45px;height:45px;margin:0 auto 10px;border-radius:50%;background:linear-gradient(135deg,#0755a0,#0b78bd);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold}
+.beneficio h3{color:#06498d;font-size:14px;margin-bottom:6px}
+.beneficio p{color:#4a6d82;font-size:12px;line-height:1.4}
+.formulario,.panel-seguimiento{background:#ffffffe6;border:3px solid #0755a059;border-radius:24px;padding:30px;box-shadow:0 12px 30px #00467833;position:relative}
+.formulario{overflow:visible}
+.formulario::before{content:"";position:absolute;top:0;left:0;width:100%;height:6px;background:linear-gradient(90deg,#0755a0,#0b78bd,#159bd0);border-radius:20px 20px 0 0}
+.formulario h2,.panel-seguimiento h2{color:#06498d;font-size:31px;margin-bottom:8px}
+.subtitulo-formulario{color:#4a6d82;font-size:14px;line-height:1.5;margin-bottom:25px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.campo{display:flex;flex-direction:column;position:relative}
+.campo-completo{grid-column:1/-1}
+.campo label,.panel-seguimiento label{color:#06498d;font-size:13px;font-weight:bold;margin-bottom:7px;display:block}
+.campo input,.campo select,.campo textarea,.panel-seguimiento input{width:100%;border:1px solid #0755a040;border-radius:12px;padding:12px 13px;background:#f9fdff;color:#31566b;font-family:Arial,Helvetica,sans-serif;font-size:13px;outline:none;transition:all .3s}
+.campo input:focus,.campo select:focus,.campo textarea:focus,.panel-seguimiento input:focus{border-color:#0755a0;box-shadow:0 0 0 3px #0755a01a;background:white}
+.campo textarea{height:90px;resize:none}
+.campo-fecha{position:relative}
+.fecha-visual{width:100%;min-height:43px;border:1px solid #0755a040;border-radius:12px;padding:12px 13px;background:#f9fdff;color:#31566b;font-size:13px;cursor:pointer;transition:all .3s}
+.fecha-visual:hover,.fecha-visual.activa{border-color:#0755a0;box-shadow:0 0 0 3px #0755a01a;background:white}
+.calendario{position:absolute;top:76px;left:0;width:310px;max-width:100%;background:white;border:2px solid #0755a04d;border-radius:18px;padding:15px;box-shadow:0 15px 35px #0032644d;z-index:200;display:none}
+.calendario.abierto{display:block;animation:fadeIn .2s}
+.calendario-cabecera{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.calendario-cabecera button{width:34px;height:34px;flex-shrink:0;border:none;border-radius:9px;background:#0755a0;color:white;font-size:19px;cursor:pointer}
+.calendario-cabecera button:hover{background:#0b78bd}
+.mes-anio{color:#06498d;font-size:14px;font-weight:bold;text-transform:capitalize;text-align:center}
+.selector-fecha{display:flex;align-items:center;justify-content:center;gap:5px;flex:1;min-width:0}
+.selector-fecha select{max-width:100%;min-width:0;border:1px solid #0755a040;border-radius:8px;padding:7px 4px;background:#f1f9fd;color:#06498d;font-size:12px;font-weight:bold}
+.dias-semana,.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dias-semana{margin-bottom:5px}
+.dias-semana div{text-align:center;color:#0755a0;font-size:11px;font-weight:bold;padding:5px 0}
+.dia{height:34px;border:none;border-radius:8px;background:#f1f9fd;color:#31566b;cursor:pointer;font-size:12px}
+.dia:hover{background:#bfe8f7}
+.dia.hoy{border:2px solid #0755a0;font-weight:bold}
+.dia.seleccionado{background:#0755a0;color:white}
+.dia.deshabilitado{color:#b8c4ca;background:#f5f5f5;cursor:not-allowed}
+.dia.vacio{background:transparent;cursor:default}
+.boton-reservar,.boton-consultar{width:100%;margin-top:23px;padding:15px;border:none;border-radius:15px;color:white;background:linear-gradient(135deg,#06498d,#0b78bd,#159bd0);font-size:14px;font-weight:bold;letter-spacing:.5px;cursor:pointer;box-shadow:0 7px 18px #00417340;transition:all .3s}
+.boton-reservar:hover,.boton-consultar:hover{transform:translateY(-2px)}
+.boton-reservar:disabled,.boton-consultar:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.mensaje,.resultado-seguimiento{display:none;margin-top:18px;padding:14px;border-radius:12px;background:#0755a01a;border:1px solid #0755a040;color:#06498d;text-align:center;font-size:13px;font-weight:bold;overflow-wrap:anywhere;line-height:1.6}
+.panel-seguimiento{margin-top:30px}
+.panel-seguimiento p{color:#4a6d82;font-size:14px;line-height:1.6;margin:8px 0 18px}
+.resultado-seguimiento{white-space:pre-line}
+.codigo-mostrado{font-size:18px;letter-spacing:1px;color:#06498d;overflow-wrap:anywhere;display:block;margin-top:8px}
+@media(max-width:900px){.pagina{padding:25px 18px 50px}.encabezado{margin-top:70px}.encabezado h1{font-size:35px}.reserva{grid-template-columns:1fr}.imagen-cita{height:350px}}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.campo-completo{grid-column:auto}.beneficios{grid-template-columns:1fr}.beneficio{border-right:none;border-bottom:1px solid #0755a033}.beneficio:last-child{border-bottom:none}.formulario,.panel-seguimiento{padding:22px}.imagen-cita{height:280px}.calendario{width:310px}.redes-flotantes{top:20px;left:18px;gap:7px}.red-social{width:36px;height:36px;font-size:20px}.facebook{font-size:24px}.tiktok{font-size:18px}}
+@media(max-width:400px){.pagina{padding-left:12px;padding-right:12px}.redes-flotantes{gap:5px;left:12px}.red-social{width:32px;height:32px;font-size:18px}.facebook{font-size:22px}.tiktok{font-size:17px}.menu-boton{width:45px;height:45px;right:12px}.encabezado h1{font-size:29px}}
 </style>
 </head>
 
 <body>
-
 <section class="pagina">
 
 <div class="redes-flotantes">
-    <a class="red-social whatsapp" href="https://wa.me/59176513508" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp">W</a>
-    <a class="red-social facebook" href="https://www.facebook.com/share/1TS7a4vHWQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">f</a>
-    <a class="red-social tiktok" href="https://www.tiktok.com/@seordelagunas?_r=1&_t=ZS-9AXEFv8emtW" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok">♪</a>
+<a class="red-social whatsapp" href="https://wa.me/59176513508" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">W</a>
+<a class="red-social facebook" href="https://www.facebook.com/share/1TS7a4vHWQ/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f</a>
+<a class="red-social tiktok" href="https://www.tiktok.com/@seordelagunas?_r=1&_t=ZS-9AXEFv8emtW" target="_blank" rel="noopener noreferrer" aria-label="TikTok">♪</a>
 </div>
 
 <button class="menu-boton" onclick="abrirMenu(this)" aria-label="Abrir menú">
-<span></span>
-<span></span>
-<span></span>
+<span></span><span></span><span></span>
 </button>
 
 <nav class="menu-desplegable" id="menu">
-
 <img class="logo-menu" src="logo-clinica.jpg.png" alt="Logo Policonsultorio Señor de Lagunas">
-
-<div class="nombre-clinica">
-POLICONSULTORIO SEÑOR DE LAGUNAS
-</div>
-
+<div class="nombre-clinica">POLICONSULTORIO SEÑOR DE LAGUNAS</div>
 <a href="index.html">INICIO</a>
 <a href="servicios.html">SERVICIOS</a>
 <a href="especialistas.html">ESPECIALISTAS</a>
 <a href="nosotros.html">NOSOTROS</a>
-
 </nav>
 
 <div class="encabezado">
@@ -743,57 +115,26 @@ POLICONSULTORIO SEÑOR DE LAGUNAS
 </div>
 
 <div class="contenido">
-
 <div class="reserva">
 
 <div class="presentacion">
-
 <div class="imagen-cita">
 <img src="imagen-citas.jpg" alt="Policonsultorio Señor de Lagunas">
 </div>
-
 <h2>Agenda tu cita médica</h2>
-
-<p>
-Solicita tu cita de manera rápida y sencilla.
-Completa tus datos y selecciona la especialidad y el médico
-que deseas consultar.
-</p>
-
+<p>Solicita tu cita de manera rápida y sencilla. Completa tus datos y selecciona la especialidad y el médico que deseas consultar.</p>
 <div class="beneficios">
-
-<div class="beneficio">
-<div class="icono">+</div>
-<h3>Atención médica</h3>
-<p>Profesionales preparados para cuidar tu salud.</p>
-</div>
-
-<div class="beneficio">
-<div class="icono">✓</div>
-<h3>Reserva sencilla</h3>
-<p>Solicita tu cita de forma rápida.</p>
-</div>
-
-<div class="beneficio">
-<div class="icono">♥</div>
-<h3>Tu bienestar</h3>
-<p>Tu salud es nuestra prioridad.</p>
-</div>
-
+<div class="beneficio"><div class="icono">+</div><h3>Atención médica</h3><p>Profesionales preparados para cuidar tu salud.</p></div>
+<div class="beneficio"><div class="icono">✓</div><h3>Reserva sencilla</h3><p>Solicita tu cita de forma rápida.</p></div>
+<div class="beneficio"><div class="icono">♥</div><h3>Tu bienestar</h3><p>Tu salud es nuestra prioridad.</p></div>
 </div>
 </div>
 
 <div class="formulario">
-
 <h2>Reserva tu cita</h2>
+<p class="subtitulo-formulario">Completa el formulario con tus datos para solicitar una cita médica.</p>
 
-<p class="subtitulo-formulario">
-Completa el formulario con tus datos para solicitar
-una cita médica.
-</p>
-
-<form onsubmit="reservarCita(event)">
-
+<form id="formularioCita">
 <div class="form-grid">
 
 <div class="campo">
@@ -803,25 +144,19 @@ una cita médica.
 
 <div class="campo campo-fecha">
 <label>Fecha de nacimiento</label>
-
-<div class="fecha-visual" id="fechaNacimientoVisual" onclick="abrirCalendario('nacimiento')">
-Selecciona una fecha
-</div>
-
+<div class="fecha-visual" id="fechaNacimientoVisual" onclick="abrirCalendario('nacimiento')">Selecciona una fecha</div>
 <div class="calendario" id="calendarioNacimiento">
 <div class="calendario-cabecera">
 <button type="button" onclick="cambiarMes('nacimiento',-1)">‹</button>
-<div class="mes-anio" id="mesNacimiento"></div>
+<div class="selector-fecha">
+<select id="selectorMesNacimiento" aria-label="Mes de nacimiento"></select>
+<select id="selectorAnioNacimiento" aria-label="Año de nacimiento"></select>
+</div>
 <button type="button" onclick="cambiarMes('nacimiento',1)">›</button>
 </div>
-
-<div class="dias-semana">
-<div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
-</div>
-
+<div class="dias-semana"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
 <div class="dias" id="diasNacimiento"></div>
 </div>
-
 <input type="hidden" id="fechaNacimiento" required>
 </div>
 
@@ -834,12 +169,7 @@ Selecciona una fecha
 <label for="especialidad">Especialidad</label>
 <select id="especialidad" required>
 <option value="">Selecciona una especialidad</option>
-<option>Medicina General</option>
-<option>Pediatría</option>
-<option>Endocrinología</option>
-<option>Dermatología</option>
-<option>Traumatología</option>
-<option>Fisioterapia</option>
+<option>Medicina General</option><option>Pediatría</option><option>Endocrinología</option><option>Dermatología</option><option>Traumatología</option><option>Fisioterapia</option>
 </select>
 </div>
 
@@ -847,36 +177,25 @@ Selecciona una fecha
 <label for="medico">Médico</label>
 <select id="medico" required>
 <option value="">Selecciona un médico</option>
-<option>Dr. Ariel Mendoza</option>
-<option>Dra. Angela Llanque Solíz</option>
-<option>Dr. Mauricio Tola</option>
-<option>Jorge Escalera</option>
-<option>Miguel Laca Jiménez</option>
-<option>Dra. Laura Fernández</option>
+<option>Dr. Ariel Mendoza</option><option>Dra. Angela Llanque Solíz</option><option>Dr. Mauricio Tola</option><option>Jorge Escalera</option><option>Miguel Laca Jiménez</option><option>Dra. Laura Fernández</option>
 </select>
 </div>
 
 <div class="campo campo-fecha">
 <label>Fecha de la cita</label>
-
-<div class="fecha-visual" id="fechaCitaVisual" onclick="abrirCalendario('cita')">
-Selecciona una fecha
-</div>
-
+<div class="fecha-visual" id="fechaCitaVisual" onclick="abrirCalendario('cita')">Selecciona una fecha</div>
 <div class="calendario" id="calendarioCita">
 <div class="calendario-cabecera">
 <button type="button" onclick="cambiarMes('cita',-1)">‹</button>
-<div class="mes-anio" id="mesCita"></div>
+<div class="selector-fecha">
+<select id="selectorMesCita" aria-label="Mes de la cita"></select>
+<select id="selectorAnioCita" aria-label="Año de la cita"></select>
+</div>
 <button type="button" onclick="cambiarMes('cita',1)">›</button>
 </div>
-
-<div class="dias-semana">
-<div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
-</div>
-
+<div class="dias-semana"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
 <div class="dias" id="diasCita"></div>
 </div>
-
 <input type="hidden" id="fechaCita" required>
 </div>
 
@@ -884,15 +203,7 @@ Selecciona una fecha
 <label for="hora">Hora</label>
 <select id="hora" required>
 <option value="">Selecciona una hora</option>
-<option>08:00</option>
-<option>09:00</option>
-<option>10:00</option>
-<option>11:00</option>
-<option>14:00</option>
-<option>15:00</option>
-<option>16:00</option>
-<option>17:00</option>
-<option>18:00</option>
+<option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option>
 </select>
 </div>
 
@@ -902,25 +213,29 @@ Selecciona una fecha
 </div>
 
 </div>
-
-<button class="boton-reservar" type="submit">
-SOLICITAR CITA
-</button>
-
+<button class="boton-reservar" type="submit">SOLICITAR CITA</button>
 <div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
-
 </form>
 </div>
 </div>
+
+<section class="panel-seguimiento">
+<h2>Consultar mi cita</h2>
+<p>Ingresa el código que recibiste al registrar tu solicitud para consultar su estado.</p>
+<form id="formSeguimiento">
+<label for="codigoConsulta">Código de seguimiento</label>
+<input id="codigoConsulta" type="text" placeholder="Escribe tu código de seguimiento" autocomplete="off" required>
+<button class="boton-consultar" id="botonConsultar" type="submit">CONSULTAR ESTADO</button>
+</form>
+<div class="resultado-seguimiento" id="resultadoSeguimiento" role="status" aria-live="polite"></div>
+</section>
+
 </div>
 </section>
 
 <script type="module">
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
-import { getFirestore, collection, addDoc, serverTimestamp }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {getFirestore,collection,doc,getDoc,writeBatch,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB8tas7ZtpJVcHlvRhVwcolAmZRH4SAVe4",
@@ -936,215 +251,288 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 window.abrirMenu = function(btn){
-    const menu = document.getElementById("menu");
-    menu.classList.toggle("abierto");
+    document.getElementById("menu").classList.toggle("abierto");
     btn.classList.toggle("activo");
 };
 
-const meses = [
-    "enero","febrero","marzo","abril","mayo","junio",
-    "julio","agosto","septiembre","octubre","noviembre","diciembre"
-];
+const meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+let calendarioNacimiento=new Date();
+let calendarioCita=new Date();
 
-let calendarioNacimiento = new Date();
-let calendarioCita = new Date();
+function obtenerFecha(tipo){
+    return tipo==="nacimiento"?calendarioNacimiento:calendarioCita;
+}
 
-window.abrirCalendario = function(tipo){
-    const calendario = document.getElementById(
-        tipo === "nacimiento" ? "calendarioNacimiento" : "calendarioCita"
-    );
+function establecerFecha(tipo,fecha){
+    if(tipo==="nacimiento")calendarioNacimiento=fecha;
+    else calendarioCita=fecha;
+}
 
-    const otro = document.getElementById(
-        tipo === "nacimiento" ? "calendarioCita" : "calendarioNacimiento"
-    );
+function llenarSelectores(tipo){
+    const mesSelect=document.getElementById(tipo==="nacimiento"?"selectorMesNacimiento":"selectorMesCita");
+    const anioSelect=document.getElementById(tipo==="nacimiento"?"selectorAnioNacimiento":"selectorAnioCita");
+    const fecha=obtenerFecha(tipo);
+    const mesActual=fecha.getMonth();
+    const anioActual=fecha.getFullYear();
 
+    mesSelect.replaceChildren();
+    meses.forEach((mes,i)=>{
+        const opcion=document.createElement("option");
+        opcion.value=i;
+        opcion.textContent=mes.charAt(0).toUpperCase()+mes.slice(1);
+        mesSelect.appendChild(opcion);
+    });
+    mesSelect.value=mesActual;
+
+    anioSelect.replaceChildren();
+    const anioMin=tipo==="nacimiento"?1900:new Date().getFullYear();
+    const anioMax=tipo==="nacimiento"?new Date().getFullYear():new Date().getFullYear()+3;
+
+    for(let anio=anioMax;anio>=anioMin;anio--){
+        const opcion=document.createElement("option");
+        opcion.value=anio;
+        opcion.textContent=anio;
+        anioSelect.appendChild(opcion);
+    }
+    anioSelect.value=anioActual;
+
+    mesSelect.onchange=()=>{
+        establecerFecha(tipo,new Date(Number(anioSelect.value),Number(mesSelect.value),1));
+        mostrarCalendario(tipo);
+    };
+    anioSelect.onchange=()=>{
+        establecerFecha(tipo,new Date(Number(anioSelect.value),Number(mesSelect.value),1));
+        mostrarCalendario(tipo);
+    };
+}
+
+window.abrirCalendario=function(tipo){
+    const calendario=document.getElementById(tipo==="nacimiento"?"calendarioNacimiento":"calendarioCita");
+    const otro=document.getElementById(tipo==="nacimiento"?"calendarioCita":"calendarioNacimiento");
     otro.classList.remove("abierto");
     calendario.classList.toggle("abierto");
-
     if(calendario.classList.contains("abierto")){
+        llenarSelectores(tipo);
         mostrarCalendario(tipo);
     }
 };
 
-window.cambiarMes = function(tipo,cambio){
-    if(tipo === "nacimiento"){
-        calendarioNacimiento.setMonth(calendarioNacimiento.getMonth()+cambio);
-    }else{
-        calendarioCita.setMonth(calendarioCita.getMonth()+cambio);
-    }
-
+window.cambiarMes=function(tipo,cambio){
+    const fecha=obtenerFecha(tipo);
+    establecerFecha(tipo,new Date(fecha.getFullYear(),fecha.getMonth()+cambio,1));
+    llenarSelectores(tipo);
     mostrarCalendario(tipo);
 };
 
 function mostrarCalendario(tipo){
-    const fecha = tipo === "nacimiento" ? calendarioNacimiento : calendarioCita;
-    const mes = fecha.getMonth();
-    const anio = fecha.getFullYear();
+    const fecha=obtenerFecha(tipo);
+    const mes=fecha.getMonth(), anio=fecha.getFullYear();
+    const contenedor=document.getElementById(tipo==="nacimiento"?"diasNacimiento":"diasCita");
+    contenedor.replaceChildren();
 
-    const nombreMes = document.getElementById(
-        tipo === "nacimiento" ? "mesNacimiento" : "mesCita"
-    );
-
-    const contenedor = document.getElementById(
-        tipo === "nacimiento" ? "diasNacimiento" : "diasCita"
-    );
-
-    nombreMes.textContent = meses[mes]+" "+anio;
-    contenedor.innerHTML = "";
-
-    const primerDia = new Date(anio,mes,1).getDay();
-    const inicio = primerDia === 0 ? 6 : primerDia-1;
-    const cantidadDias = new Date(anio,mes+1,0).getDate();
-    const hoy = new Date();
+    const primerDia=new Date(anio,mes,1).getDay();
+    const inicio=primerDia===0?6:primerDia-1;
+    const cantidadDias=new Date(anio,mes+1,0).getDate();
+    const hoy=new Date();
 
     for(let i=0;i<inicio;i++){
-        const vacio = document.createElement("button");
-        vacio.type = "button";
-        vacio.className = "dia vacio";
-        vacio.disabled = true;
+        const vacio=document.createElement("button");
+        vacio.type="button";
+        vacio.className="dia vacio";
+        vacio.disabled=true;
         vacio.setAttribute("aria-hidden","true");
         contenedor.appendChild(vacio);
     }
 
     for(let dia=1;dia<=cantidadDias;dia++){
-        const boton = document.createElement("button");
-        boton.type = "button";
-        boton.className = "dia";
-        boton.textContent = dia;
+        const boton=document.createElement("button");
+        boton.type="button";
+        boton.className="dia";
+        boton.textContent=dia;
 
-        const fechaDia = new Date(anio,mes,dia);
-
-        if(
-            dia === hoy.getDate() &&
-            mes === hoy.getMonth() &&
-            anio === hoy.getFullYear()
-        ){
+        const fechaDia=new Date(anio,mes,dia);
+        if(dia===hoy.getDate()&&mes===hoy.getMonth()&&anio===hoy.getFullYear()){
             boton.classList.add("hoy");
         }
 
-        if(tipo === "cita"){
-            const hoySinHora = new Date(
-                hoy.getFullYear(),hoy.getMonth(),hoy.getDate()
-            );
-
-            if(fechaDia < hoySinHora){
+        if(tipo==="cita"){
+            const hoySinHora=new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate());
+            if(fechaDia<hoySinHora){
                 boton.classList.add("deshabilitado");
-                boton.disabled = true;
+                boton.disabled=true;
             }
+        }else if(fechaDia>hoy){
+            boton.classList.add("deshabilitado");
+            boton.disabled=true;
         }
 
-        const valor = anio+"-"+String(mes+1).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
+        const valor=anio+"-"+String(mes+1).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
+        const campo=document.getElementById(tipo==="nacimiento"?"fechaNacimiento":"fechaCita");
+        if(campo.value===valor)boton.classList.add("seleccionado");
 
-        const campo = document.getElementById(
-            tipo === "nacimiento" ? "fechaNacimiento" : "fechaCita"
-        );
-
-        if(campo.value === valor){
-            boton.classList.add("seleccionado");
-        }
-
-        boton.onclick = function(){
-            seleccionarFecha(tipo,fechaDia,valor);
-        };
-
+        boton.addEventListener("click",()=>seleccionarFecha(tipo,fechaDia,valor));
         contenedor.appendChild(boton);
     }
+
+    const mesSelect=document.getElementById(tipo==="nacimiento"?"selectorMesNacimiento":"selectorMesCita");
+    const anioSelect=document.getElementById(tipo==="nacimiento"?"selectorAnioNacimiento":"selectorAnioCita");
+    if(mesSelect)mesSelect.value=mes;
+    if(anioSelect)anioSelect.value=anio;
 }
 
 function seleccionarFecha(tipo,fecha,valor){
-    const texto =
-        String(fecha.getDate()).padStart(2,"0")+
-        " de "+meses[fecha.getMonth()]+
-        " de "+fecha.getFullYear();
+    const texto=String(fecha.getDate()).padStart(2,"0")+" de "+meses[fecha.getMonth()]+" de "+fecha.getFullYear();
 
-    if(tipo === "nacimiento"){
-        document.getElementById("fechaNacimiento").value = valor;
-        document.getElementById("fechaNacimientoVisual").textContent = texto;
+    if(tipo==="nacimiento"){
+        document.getElementById("fechaNacimiento").value=valor;
+        document.getElementById("fechaNacimientoVisual").textContent=texto;
         document.getElementById("calendarioNacimiento").classList.remove("abierto");
     }else{
-        document.getElementById("fechaCita").value = valor;
-        document.getElementById("fechaCitaVisual").textContent = texto;
+        document.getElementById("fechaCita").value=valor;
+        document.getElementById("fechaCitaVisual").textContent=texto;
         document.getElementById("calendarioCita").classList.remove("abierto");
     }
 }
 
-document.addEventListener("click",function(event){
+document.addEventListener("click",event=>{
     if(!event.target.closest(".campo-fecha")){
         document.getElementById("calendarioNacimiento").classList.remove("abierto");
         document.getElementById("calendarioCita").classList.remove("abierto");
     }
 });
 
-window.reservarCita = async function(event){
+function generarCodigo(){
+    const bytes=new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("").toUpperCase();
+}
+
+const formularioCita=document.getElementById("formularioCita");
+const mensaje=document.getElementById("mensaje");
+
+formularioCita.addEventListener("submit",async event=>{
     event.preventDefault();
 
-    const formulario = event.target;
-    const mensaje = document.getElementById("mensaje");
+    const nombre=document.getElementById("nombre").value.trim();
+    const fechaNacimiento=document.getElementById("fechaNacimiento").value;
+    const telefono=document.getElementById("telefono").value.trim();
+    const especialidad=document.getElementById("especialidad").value;
+    const medico=document.getElementById("medico").value;
+    const fechaCita=document.getElementById("fechaCita").value;
+    const hora=document.getElementById("hora").value;
+    const motivo=document.getElementById("motivo").value.trim();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const fechaNacimiento = document.getElementById("fechaNacimiento").value;
-    const telefono = document.getElementById("telefono").value.trim();
-    const especialidad = document.getElementById("especialidad").value;
-    const medico = document.getElementById("medico").value;
-    const fechaCita = document.getElementById("fechaCita").value;
-    const hora = document.getElementById("hora").value;
-    const motivo = document.getElementById("motivo").value.trim();
-
-    if(!fechaNacimiento){
-        alert("Selecciona la fecha de nacimiento.");
+    if(!fechaNacimiento){alert("Selecciona la fecha de nacimiento.");return;}
+    if(!fechaCita){alert("Selecciona la fecha de la cita.");return;}
+    if(fechaNacimiento>new Date().toISOString().slice(0,10)){
+        alert("La fecha de nacimiento no puede ser futura.");
         return;
     }
 
-    if(!fechaCita){
-        alert("Selecciona la fecha de la cita.");
-        return;
-    }
+    const hoy=new Date();
+    const hoyISO=hoy.getFullYear()+"-"+String(hoy.getMonth()+1).padStart(2,"0")+"-"+String(hoy.getDate()).padStart(2,"0");
+    if(fechaCita<hoyISO){alert("Selecciona una fecha de cita válida.");return;}
 
-    if(fechaCita < new Date().toLocaleDateString("en-CA")){
-        alert("Selecciona una fecha de cita válida.");
-        return;
-    }
-
-    const boton = formulario.querySelector(".boton-reservar");
-    boton.disabled = true;
-    boton.textContent = "REGISTRANDO...";
+    const boton=formularioCita.querySelector(".boton-reservar");
+    boton.disabled=true;
+    boton.textContent="REGISTRANDO...";
+    mensaje.style.display="block";
+    mensaje.textContent="Registrando tu solicitud...";
 
     try{
-        await addDoc(collection(db,"citas"),{
-            nombre:nombre,
-            fechaNacimiento:fechaNacimiento,
-            telefono:telefono,
-            especialidad:especialidad,
-            medico:medico,
-            fechaCita:fechaCita,
-            hora:hora,
-            motivo:motivo,
+        const codigoSeguimiento=generarCodigo();
+        const citaRef=doc(collection(db,"citas"));
+        const seguimientoRef=doc(db,"seguimientoCitas",codigoSeguimiento);
+        const lote=writeBatch(db);
+
+        lote.set(citaRef,{
+            nombre,fechaNacimiento,telefono,especialidad,medico,fechaCita,hora,motivo,
             estado:"pendiente",
+            codigoSeguimiento,
             fechaRegistro:serverTimestamp()
         });
 
-        mensaje.textContent = "Tu solicitud de cita ha sido registrada correctamente.";
-        mensaje.style.display = "block";
-        formulario.reset();
+        lote.set(seguimientoRef,{
+            estado:"pendiente",
+            fechaCita,
+            hora,
+            especialidad,
+            medico,
+            citaId:citaRef.id
+        });
 
-        document.getElementById("fechaNacimiento").value = "";
-        document.getElementById("fechaCita").value = "";
-        document.getElementById("fechaNacimientoVisual").textContent = "Selecciona una fecha";
-        document.getElementById("fechaCitaVisual").textContent = "Selecciona una fecha";
+        await lote.commit();
 
+        mensaje.textContent="¡Tu solicitud fue registrada! Guarda este código para consultar el estado de tu cita:";
+        const codigo=document.createElement("strong");
+        codigo.className="codigo-mostrado";
+        codigo.textContent=codigoSeguimiento;
+        mensaje.appendChild(document.createElement("br"));
+        mensaje.appendChild(codigo);
+
+        formularioCita.reset();
+        document.getElementById("fechaNacimiento").value="";
+        document.getElementById("fechaCita").value="";
+        document.getElementById("fechaNacimientoVisual").textContent="Selecciona una fecha";
+        document.getElementById("fechaCitaVisual").textContent="Selecciona una fecha";
     }catch(error){
         console.error(error);
-        mensaje.textContent = "No se pudo registrar la cita. Verifica la conexión con la base de datos.";
-        mensaje.style.display = "block";
+        mensaje.textContent="No se pudo registrar la cita. Revisa las reglas de Firebase antes de volver a intentarlo.";
     }finally{
-        boton.disabled = false;
-        boton.textContent = "SOLICITAR CITA";
+        boton.disabled=false;
+        boton.textContent="SOLICITAR CITA";
     }
-};
+});
 
+const formSeguimiento=document.getElementById("formSeguimiento");
+const codigoConsulta=document.getElementById("codigoConsulta");
+const resultadoSeguimiento=document.getElementById("resultadoSeguimiento");
+const botonConsultar=document.getElementById("botonConsultar");
+
+formSeguimiento.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const codigo=codigoConsulta.value.trim().toUpperCase();
+    resultadoSeguimiento.style.display="block";
+    resultadoSeguimiento.textContent="Consultando...";
+    botonConsultar.disabled=true;
+
+    try{
+        if(!/^[A-F0-9]{32}$/.test(codigo)){
+            resultadoSeguimiento.textContent="El código no tiene el formato correcto. Revisa el código que guardaste.";
+            return;
+        }
+
+        const resultado=await getDoc(doc(db,"seguimientoCitas",codigo));
+        if(!resultado.exists()){
+            resultadoSeguimiento.textContent="No encontramos una solicitud con ese código. Revísalo e inténtalo otra vez.";
+            return;
+        }
+
+        const cita=resultado.data();
+        const estados={
+            pendiente:"Tu solicitud está pendiente de revisión.",
+            confirmada:"¡Tu cita ha sido confirmada!",
+            cancelada:"Tu solicitud de cita fue cancelada."
+        };
+
+        resultadoSeguimiento.textContent=
+            (estados[cita.estado]||"Estado no disponible.")+
+            (cita.fechaCita?"\nFecha: "+cita.fechaCita:"")+
+            (cita.hora?"\nHora: "+cita.hora:"")+
+            (cita.especialidad?"\nEspecialidad: "+cita.especialidad:"")+
+            (cita.medico?"\nMédico: "+cita.medico:"");
+    }catch(error){
+        console.error(error);
+        resultadoSeguimiento.textContent="No se pudo consultar la cita. Comprueba tu conexión y las reglas de Firebase.";
+    }finally{
+        botonConsultar.disabled=false;
+    }
+});
+
+llenarSelectores("nacimiento");
+llenarSelectores("cita");
 mostrarCalendario("nacimiento");
 mostrarCalendario("cita");
 </script>
-
 </body>
 </html>
